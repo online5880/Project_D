@@ -43,4 +43,12 @@ private:
 	// 떨어지고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
 		bool IsFalling;
+
+	// Right Input Value
+	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+		float RightInputValue;
+
+	// Forward Input Value
+	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+		float ForwardInputValue;
 };

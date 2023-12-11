@@ -32,5 +32,7 @@ void UPDAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		Direction = UKismetMathLibrary::NormalizeAxis(UKismetAnimationLibrary::CalculateDirection(MovementComponent->Velocity, Character->GetActorRotation()));
 		ShouldMove = MovementComponent->GetCurrentAcceleration().IsNearlyZero() && GroundSpeed > 3.f ? true : false;
 		IsFalling = MovementComponent->IsFalling();
+		ForwardInputValue = Character->GetForwardInputValue();
+		RightInputValue = Character->GetRightInputValue();
 	}
 }

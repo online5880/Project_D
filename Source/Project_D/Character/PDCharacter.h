@@ -24,10 +24,18 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	/**
+	 * member method
+	 */
 	void Move(const FInputActionValue& Value);
+	void MoveComplete(const FInputActionValue& Value);
+	void Walk(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+
+	void SmoothCameraRotation(float DeltaTime);
 
 private:
 #pragma region Component
@@ -60,11 +68,20 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UInputAction> WalkAction;
 
-	// 달리기 액션
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UInputAction> SprintAction;
+#pragma region Movement Variables
+	// 움직임 값 - X
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+		float RightInputValue;
 
-	// 앉기 액션
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UInputAction> CrouchAction;
+	// 움직임 값 - Y
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+		float ForwardInputValue;
+
+	// 걷는 중인지
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+		bool bIsWalk;
+
+public:
+	FORCEINLINE float GetForwardInputValue() const { return ForwardInputValue; }
+	FORCEINLINE float GetRightInputValue() const { return RightInputValue; }
 };
