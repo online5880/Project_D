@@ -69,6 +69,7 @@ void APDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &ThisClass::MoveComplete);
 		EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Triggered, this, &ThisClass::Walk);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ThisClass::Crouch);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	}
 }
@@ -102,6 +103,11 @@ void APDCharacter::MoveComplete(const FInputActionValue& Value)
 void APDCharacter::Walk(const FInputActionValue& Value)
 {
 	bIsWalk = Value.Get<bool>();
+}
+
+void APDCharacter::Crouch(const FInputActionValue& Value)
+{
+	bIsCrouching = Value.Get<bool>();
 }
 
 void APDCharacter::Look(const FInputActionValue& Value)

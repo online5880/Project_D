@@ -38,11 +38,15 @@ private:
 
 	// 움직이고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		bool ShouldMove;
+		bool bShouldMove;
 
 	// 떨어지고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		bool IsFalling;
+		bool bIsFalling;
+
+	// 떨어지고 있는지
+	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
+		bool bIsCrouching;
 
 	// Right Input Value
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))

@@ -30,8 +30,9 @@ void UPDAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		GroundSpeed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
 		Direction = UKismetMathLibrary::NormalizeAxis(UKismetAnimationLibrary::CalculateDirection(MovementComponent->Velocity, Character->GetActorRotation()));
-		ShouldMove = MovementComponent->GetCurrentAcceleration().IsNearlyZero() && GroundSpeed > 3.f ? true : false;
-		IsFalling = MovementComponent->IsFalling();
+		bShouldMove = MovementComponent->GetCurrentAcceleration().IsNearlyZero() && GroundSpeed > 3.f ? true : false;
+		bIsFalling = MovementComponent->IsFalling();
+		bIsCrouching = Character->GetIsCrouching();
 		ForwardInputValue = Character->GetForwardInputValue();
 		RightInputValue = Character->GetRightInputValue();
 	}

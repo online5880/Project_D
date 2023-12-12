@@ -33,6 +33,7 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void MoveComplete(const FInputActionValue& Value);
 	void Walk(const FInputActionValue& Value);
+	void Crouch(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
 	void SmoothCameraRotation(float DeltaTime);
@@ -68,6 +69,10 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UInputAction> WalkAction;
 
+	// 걷기 액션
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<UInputAction> CrouchAction;
+
 #pragma region Movement Variables
 	// 움직임 값 - X
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
@@ -81,7 +86,14 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 		bool bIsWalk;
 
+	// 앉아 있는지
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+		bool bIsCrouching;
+
+	
+
 public:
 	FORCEINLINE float GetForwardInputValue() const { return ForwardInputValue; }
 	FORCEINLINE float GetRightInputValue() const { return RightInputValue; }
+	FORCEINLINE bool GetIsCrouching() const { return bIsCrouching; }
 };
