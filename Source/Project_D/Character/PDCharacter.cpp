@@ -3,9 +3,11 @@
 #include "../../../../../Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h"
 #include "../../../../../Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(PDCharacter)
 
@@ -29,6 +31,10 @@ APDCharacter::APDCharacter()
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
 	CameraComponent->bUsePawnControlRotation = false;
 
+	CrouchTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("CrouchTimelineComponent"));
+	OnCrouchTimelineFloat.BindUFunction(this, FName("CrouchTimelineLerp"));
+	OnCrouchTimelineFinish.BindUFunction(this, FName("CrouchTimelineFinish"));
+
 	bIsWalk = false;
 }
 
@@ -51,6 +57,7 @@ void APDCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MappingContext();
+	CrouchTimelineSetting();
 }
 
 void APDCharacter::Tick(float DeltaSeconds)
@@ -69,7 +76,7 @@ void APDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &ThisClass::MoveComplete);
 		EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Triggered, this, &ThisClass::Walk);
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ThisClass::Crouch);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ThisClass::Crouching);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 	}
 }
@@ -105,9 +112,36 @@ void APDCharacter::Walk(const FInputActionValue& Value)
 	bIsWalk = Value.Get<bool>();
 }
 
-void APDCharacter::Crouch(const FInputActionValue& Value)
+void APDCharacter::Crouching(const FInputActionValue& Value)
 {
-	bIsCrouching = Value.Get<bool>();
+	const bool CanCrouching = !bIsCrouching;
+
+	if(CanCrouching)
+	{
+		bIsCrouching = true;
+		CrouchTimelineComponent->PlayFromStart();
+	}
+	else
+	{
+		const FVector Start = GetActorLocation();
+		const FVector End = (GetActorUpVector() * 100 + Start);
+		FHitResult HitResult;
+		UKismetSystemLibrary::LineTraceSingle(
+			GetWorld(),
+			Start,
+			End,
+			TraceTypeQuery1,
+			false,
+			TArray<AActor*>(),
+			EDrawDebugTrace::None,
+			HitResult,
+			true);
+		if (!HitResult.bBlockingHit)
+		{
+			bIsCrouching = false;
+			CrouchTimelineComponent->ReverseFromEnd();
+		}
+	}
 }
 
 void APDCharacter::Look(const FInputActionValue& Value)
@@ -128,4 +162,23 @@ void APDCharacter::SmoothCameraRotation(float DeltaTime)
 		const FRotator InterpRot = UKismetMathLibrary::RInterpTo(GetActorRotation(), GetControlRotation(), DeltaTime, 6.f);
 		SetActorRotation(FRotator(0.f, InterpRot.Yaw, 0.f));
 	}
+}
+
+void APDCharacter::CrouchTimelineSetting()
+{
+	if(CrouchTimelineCurve)
+	{
+		CrouchTimelineComponent->AddInterpFloat(CrouchTimelineCurve, OnCrouchTimelineFloat);
+		CrouchTimelineComponent->SetTimelineFinishedFunc(OnCrouchTimelineFinish);
+		CrouchTimelineComponent->SetLooping(false);
+	}
+}
+
+void APDCharacter::CrouchTimelineLerp(float Value)
+{
+	GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp(88.f, 44.f, Value));
+}
+
+void APDCharacter::CrouchTimelineFinish()
+{
 }
