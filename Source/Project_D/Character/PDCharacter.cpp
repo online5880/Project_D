@@ -31,10 +31,6 @@ APDCharacter::APDCharacter()
 	CameraComponent->SetupAttachment(SpringArmComponent, USpringArmComponent::SocketName);
 	CameraComponent->bUsePawnControlRotation = false;
 
-	CrouchTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("CrouchTimelineComponent"));
-	OnCrouchTimelineFloat.BindUFunction(this, FName("CrouchTimelineLerp"));
-	OnCrouchTimelineFinish.BindUFunction(this, FName("CrouchTimelineFinish"));
-
 	bIsWalk = false;
 }
 
@@ -57,7 +53,6 @@ void APDCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MappingContext();
-	CrouchTimelineSetting();
 }
 
 void APDCharacter::Tick(float DeltaSeconds)
@@ -120,7 +115,6 @@ void APDCharacter::Crouching(const FInputActionValue& Value)
 	{
 		bIsCrouching = true;
 		Crouch();
-		//CrouchTimelineComponent->PlayFromStart();
 	}
 	else
 	{
@@ -141,7 +135,6 @@ void APDCharacter::Crouching(const FInputActionValue& Value)
 		{
 			bIsCrouching = false;
 			UnCrouch();
-			//CrouchTimelineComponent->ReverseFromEnd();
 		}
 	}
 }
@@ -154,6 +147,7 @@ void APDCharacter::Look(const FInputActionValue& Value)
 	{
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+
 	}
 }
 
@@ -166,21 +160,3 @@ void APDCharacter::SmoothCameraRotation(float DeltaTime)
 	}
 }
 
-void APDCharacter::CrouchTimelineSetting() const
-{
-	if(CrouchTimelineCurve)
-	{
-		CrouchTimelineComponent->AddInterpFloat(CrouchTimelineCurve, OnCrouchTimelineFloat);
-		CrouchTimelineComponent->SetTimelineFinishedFunc(OnCrouchTimelineFinish);
-		CrouchTimelineComponent->SetLooping(false);
-	}
-}
-
-void APDCharacter::CrouchTimelineLerp(float Value)
-{
-	GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp(88.f, 44.f, Value));
-}
-
-void APDCharacter::CrouchTimelineFinish()
-{
-}
