@@ -119,7 +119,8 @@ void APDCharacter::Crouching(const FInputActionValue& Value)
 	if(CanCrouching)
 	{
 		bIsCrouching = true;
-		CrouchTimelineComponent->PlayFromStart();
+		Crouch();
+		//CrouchTimelineComponent->PlayFromStart();
 	}
 	else
 	{
@@ -139,7 +140,8 @@ void APDCharacter::Crouching(const FInputActionValue& Value)
 		if (!HitResult.bBlockingHit)
 		{
 			bIsCrouching = false;
-			CrouchTimelineComponent->ReverseFromEnd();
+			UnCrouch();
+			//CrouchTimelineComponent->ReverseFromEnd();
 		}
 	}
 }
@@ -164,7 +166,7 @@ void APDCharacter::SmoothCameraRotation(float DeltaTime)
 	}
 }
 
-void APDCharacter::CrouchTimelineSetting()
+void APDCharacter::CrouchTimelineSetting() const
 {
 	if(CrouchTimelineCurve)
 	{

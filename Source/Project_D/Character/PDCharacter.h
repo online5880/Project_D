@@ -40,7 +40,7 @@ protected:
 	// 카메라 회전을 부드럽게 해준다.
 	void SmoothCameraRotation(float DeltaTime);
 
-	void CrouchTimelineSetting();
+	void CrouchTimelineSetting() const;
 	UFUNCTION()
 	void CrouchTimelineLerp(float Value);
 	UFUNCTION()
