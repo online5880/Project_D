@@ -16,8 +16,13 @@ public:
 
 protected:
 	virtual void NativeInitializeAnimation() override;
-
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	/**
+	 * member method
+	 */
+	// 제자리 회전
+	void TurnInPlace();
 
 private:
 	// 캐릭터 클래스
@@ -30,29 +35,47 @@ private:
 
 	// 속도
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		float GroundSpeed;
+		float GroundSpeed = 0.f;
 
 	// 방향
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		float Direction;
+		float Direction = 0.f;
 
 	// 움직이고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		bool bShouldMove;
+		bool bShouldMove = false;
 
 	// 떨어지고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		bool bIsFalling;
+		bool bIsFalling = false;
 
 	// 떨어지고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		bool bIsCrouching;
+		bool bIsCrouching = false;
 
 	// Right Input Value
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		float RightInputValue;
+		float RightInputValue = 0.f;
 
 	// Forward Input Value
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		float ForwardInputValue;
+		float ForwardInputValue = 0.f;
+
+#pragma region TurnInPlace
+	float MovementOffsetYaw;
+	float LastMovementOffsetYaw;
+	
+	// 현재 프레임의 Yaw
+		float CharacterYaw = 0.f;
+	// 이전 프레임의 Yaw
+		float CharacterYawLastFrame = 0.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		float RootYawOffset = 0.f;;
+
+	// 현재 프레임의 회전 커브 값
+	float RotationCurve;
+
+	// 마지막 프레임의 회전 커브 값
+	float RotationCurveLastFrame;
 };

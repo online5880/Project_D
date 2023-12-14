@@ -40,12 +40,6 @@ protected:
 	// 카메라 회전을 부드럽게 해준다.
 	void SmoothCameraRotation(float DeltaTime);
 
-	void CrouchTimelineSetting() const;
-	UFUNCTION()
-	void CrouchTimelineLerp(float Value);
-	UFUNCTION()
-	void CrouchTimelineFinish();
-
 private:
 #pragma region Component
 	// 스프링암
@@ -98,15 +92,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 		bool bIsCrouching;
 
-#pragma region Timeline
-	FOnTimelineFloat OnCrouchTimelineFloat;
-	FOnTimelineEvent OnCrouchTimelineFinish;
-
-	UPROPERTY()
-	TObjectPtr<UTimelineComponent> CrouchTimelineComponent;
-
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = Movement, meta= (AllowPrivateAccess = "true"))
-	TObjectPtr<UCurveFloat> CrouchTimelineCurve;
 
 public:
 	FORCEINLINE float GetForwardInputValue() const { return ForwardInputValue; }
