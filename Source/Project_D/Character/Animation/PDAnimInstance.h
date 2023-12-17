@@ -24,6 +24,9 @@ protected:
 	// 제자리 회전
 	void TurnInPlace();
 
+	// 머리 회전
+	void CalcHeadRotation(const float MaxLeftRight, const float MaxUpDown, const float Speed, const float Delta);
+
 private:
 	// 캐릭터 클래스
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
@@ -78,4 +81,9 @@ private:
 
 	// 마지막 프레임의 회전 커브 값
 	float RotationCurveLastFrame;
+
+#pragma region HeadRotation
+	UPROPERTY(BlueprintReadOnly,Category = "Movement",meta = (AllowPrivateAccess = "true"))
+	FRotator HeadRotation;
+	
 };
