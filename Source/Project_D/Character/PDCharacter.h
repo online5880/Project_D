@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "PDCharacter.generated.h"
 
+class UTurnInPlaceComponent;
 class UInputAction;
 class UInputMappingContext;
 class UCameraComponent;
@@ -49,6 +50,10 @@ private:
 	// 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<UCameraComponent> CameraComponent;
+
+	// TurnInPlace Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UTurnInPlaceComponent> TurnInPlaceComponent;
 
 #pragma region InputAction
 	// 맵핑 콘텍스트

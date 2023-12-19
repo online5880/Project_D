@@ -83,6 +83,7 @@ private:
 	float RotationCurveLastFrame;
 
 #pragma region HeadRotation
+	// 머리 회전 값(transform modify bone - head)
 	UPROPERTY(BlueprintReadOnly,Category = "Movement",meta = (AllowPrivateAccess = "true"))
 	FRotator HeadRotation;
 	
