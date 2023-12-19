@@ -1,10 +1,10 @@
 #pragma once
 
 #include "../../../../../Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/InputActionValue.h"
-#include "Components/TimelineComponent.h"
 #include "GameFramework/Character.h"
 #include "PDCharacter.generated.h"
 
+class UTurnInPlaceComponent;
 class UInputAction;
 class UInputMappingContext;
 class UCameraComponent;
@@ -44,53 +44,57 @@ private:
 #pragma region Component
 	// 스프링암
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<USpringArmComponent> SpringArmComponent;
+	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
 	// 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UCameraComponent> CameraComponent;
+	TObjectPtr<UCameraComponent> CameraComponent;
+
+	// TurnInPlace Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UTurnInPlaceComponent> TurnInPlaceComponent;
 
 #pragma region InputAction
 	// 맵핑 콘텍스트
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UInputMappingContext> DefaultMappingContext;
+	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
 	// 점프 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UInputAction> JumpAction;
+	TObjectPtr<UInputAction> JumpAction;
 
 	// 무브 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UInputAction> MoveAction;
+	TObjectPtr<UInputAction> MoveAction;
 
 	// 카메라 움직임 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UInputAction> LookAction;
+	TObjectPtr<UInputAction> LookAction;
 
 	// 걷기 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UInputAction> WalkAction;
+	TObjectPtr<UInputAction> WalkAction;
 
 	// 걷기 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UInputAction> CrouchAction;
+	TObjectPtr<UInputAction> CrouchAction;
 
 #pragma region Movement Variables
 	// 움직임 값 - X
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-		float RightInputValue;
+	float RightInputValue;
 
 	// 움직임 값 - Y
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-		float ForwardInputValue;
+	float ForwardInputValue;
 
 	// 걷는 중인지
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-		bool bIsWalk;
+	bool bIsWalk;
 
 	// 앉아 있는지
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-		bool bIsCrouching;
+	bool bIsCrouching;
 
 
 public:

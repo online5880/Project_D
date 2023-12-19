@@ -36,7 +36,7 @@ void UPDAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		ForwardInputValue = Character->GetForwardInputValue();
 		RightInputValue = Character->GetRightInputValue();
 
-		const FRotator AimRotation = Character->GetBaseAimRotation();
+		/*const FRotator AimRotation = Character->GetBaseAimRotation();
 		const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(Character->GetVelocity());
 		MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,AimRotation).Yaw;
 
@@ -46,7 +46,7 @@ void UPDAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 		
 		TurnInPlace();
-		CalcHeadRotation(80.f,50.f,5.f,DeltaSeconds);
+		CalcHeadRotation(80.f,50.f,5.f,DeltaSeconds);*/
 	}
 }
 
