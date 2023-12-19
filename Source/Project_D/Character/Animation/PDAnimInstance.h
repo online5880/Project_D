@@ -30,51 +30,51 @@ protected:
 private:
 	// 캐릭터 클래스
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<APDCharacter> Character;
+	TObjectPtr<APDCharacter> Character;
 
 	// 무브먼트 컴포넌트
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<UCharacterMovementComponent> MovementComponent;
+	TObjectPtr<UCharacterMovementComponent> MovementComponent;
 
 	// 속도
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		float GroundSpeed = 0.f;
+	float GroundSpeed = 0.f;
 
 	// 방향
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		float Direction = 0.f;
+	float Direction = 0.f;
 
 	// 움직이고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		bool bShouldMove = false;
+	bool bShouldMove = false;
 
 	// 떨어지고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		bool bIsFalling = false;
+	bool bIsFalling = false;
 
 	// 떨어지고 있는지
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		bool bIsCrouching = false;
+	bool bIsCrouching = false;
 
 	// Right Input Value
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		float RightInputValue = 0.f;
+	float RightInputValue = 0.f;
 
 	// Forward Input Value
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
-		float ForwardInputValue = 0.f;
+	float ForwardInputValue = 0.f;
 
 #pragma region TurnInPlace
 	float MovementOffsetYaw;
 	float LastMovementOffsetYaw;
 	
 	// 현재 프레임의 Yaw
-		float CharacterYaw = 0.f;
+	float CharacterYaw = 0.f;
 	// 이전 프레임의 Yaw
-		float CharacterYawLastFrame = 0.f;
+	float CharacterYawLastFrame = 0.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-		float RootYawOffset = 0.f;;
+	float RootYawOffset = 0.f;;
 
 	// 현재 프레임의 회전 커브 값
 	float RotationCurve;
