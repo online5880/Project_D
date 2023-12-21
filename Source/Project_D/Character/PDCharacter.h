@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "PDCharacter.generated.h"
 
+class UJumpComponent;
 class UTurnInPlaceComponent;
 class UInputAction;
 class UInputMappingContext;
@@ -28,6 +29,7 @@ protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	virtual void Jump() override;
 	/**
 	 * member method
 	 */
@@ -54,6 +56,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UTurnInPlaceComponent> TurnInPlaceComponent;
 
+	// Jump Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UJumpComponent> JumpComponent;
 #pragma region InputAction
 	// 맵핑 콘텍스트
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
