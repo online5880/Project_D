@@ -21,18 +21,8 @@ void UTurnInPlaceComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if(OwnerCharacter == nullptr)
-	{
-		OwnerCharacter = Cast<APDCharacter>(GetOwner());
-		if(OwnerCharacter)
-		{
-			AnimInstance = Cast<UPDAnimInstance>(OwnerCharacter->GetMesh()->GetAnimInstance()); 
-			if(AnimInstance)
-			{
-				AnimInstance->OnMontageEnded.AddDynamic(this,&ThisClass::UTurnInPlaceComponent::TurnMontageEnded);
-			}
-		}
-	}
+	// 캐릭터와 애니메이션 인스턴스 설정
+	InitializeCharacterAndAnimInstance();
 }
 
 void UTurnInPlaceComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -40,12 +30,31 @@ void UTurnInPlaceComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// 캐릭터의 회전 처리 로직
+	ProcessCharacterRotation();
+}
+
+void UTurnInPlaceComponent::InitializeCharacterAndAnimInstance()
+{
+	if(OwnerCharacter == nullptr)
+	{
+		OwnerCharacter = Cast<APDCharacter>(GetOwner());
+		if(OwnerCharacter)
+		{
+			AnimInstance = Cast<UPDAnimInstance>(OwnerCharacter->GetMesh()->GetAnimInstance()); 
+		}
+	}
+}
+
+void UTurnInPlaceComponent::ProcessCharacterRotation()
+{
 	if(OwnerCharacter)
 	{
 		YawDelta = UKismetMathLibrary::NormalizedDeltaRotator(OwnerCharacter->GetActorRotation(),OwnerCharacter->GetBaseAimRotation()).Yaw * -1;
 		TurnInPlace();
 	}
 }
+
 
 void UTurnInPlaceComponent::TurnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
@@ -95,16 +104,11 @@ void UTurnInPlaceComponent::PlayTurnMontageBasedOnYaw(const float Yaw, const FSt
 	// 몽타주 재생 및 회전 상태 설정
 	if(MontageToPlay && !bIsTurning)
 	{
+		FOnMontageEnded MontageEnded;
+		MontageEnded.BindUObject(this,&UTurnInPlaceComponent::TurnMontageEnded);
 		bIsTurning = true;
 		AnimInstance->Montage_Play(MontageToPlay, 1.f);
-	}
-}
-
-void UTurnInPlaceComponent::ClearMotion() const
-{
-	if(OwnerCharacter->IsPlayingRootMotion())
-	{
-		OwnerCharacter->StopAnimMontage(OwnerCharacter->GetCurrentMontage());
+		AnimInstance->Montage_SetEndDelegate(MontageEnded,MontageToPlay);
 	}
 }
 

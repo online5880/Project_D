@@ -3,6 +3,7 @@
 #include "../../../../../Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h"
 #include "../../../../../Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Component/JumpComponent.h"
 #include "Component/TurnInPlaceComponent.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -34,6 +35,7 @@ APDCharacter::APDCharacter()
 	CameraComponent->bUsePawnControlRotation = false;
 
 	TurnInPlaceComponent = CreateDefaultSubobject<UTurnInPlaceComponent>(TEXT("TurnInPlaceComponent"));
+	JumpComponent = CreateDefaultSubobject<UJumpComponent>(TEXT("JumpComponent"));
 
 	bIsWalk = false;
 }
@@ -77,6 +79,15 @@ void APDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(WalkAction, ETriggerEvent::Triggered, this, &ThisClass::Walk);
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ThisClass::Crouching);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+		EnhancedInputComponent->BindAction(JumpAction,ETriggerEvent::Triggered,this,&ThisClass::Jump);
+	}
+}
+
+void APDCharacter::Jump()
+{
+	if(JumpComponent)
+	{
+		JumpComponent->Jump(GetVelocity().Size2D());
 	}
 }
 
