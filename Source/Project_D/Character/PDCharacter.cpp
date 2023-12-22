@@ -87,15 +87,15 @@ void APDCharacter::Jump()
 {
 	if(JumpComponent)
 	{
-		JumpComponent->Jump(GetVelocity().Size2D());
+		//JumpComponent->Jump(GetVelocity().Size2D());
 	}
 }
 
 void APDCharacter::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
-
-	if(Controller != nullptr)
+	
+	if(Controller != nullptr && !TurnInPlaceComponent->GetIsTurning())
 	{
 		if(bIsWalk)
 		{

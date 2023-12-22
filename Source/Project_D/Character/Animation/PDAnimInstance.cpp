@@ -46,7 +46,8 @@ void UPDAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 		
 		TurnInPlace();
-		CalcHeadRotation(80.f,50.f,5.f,DeltaSeconds);*/
+		*/
+		CalcHeadRotation(80.f,50.f,5.f,DeltaSeconds);
 	}
 }
 

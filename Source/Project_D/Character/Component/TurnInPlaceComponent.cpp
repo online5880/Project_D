@@ -5,12 +5,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Animation/AnimMontage.h"
 #include "Project_D/Character/Animation/PDAnimInstance.h"
-
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TurnInPlaceComponent)
-
-// 상수 정의
-constexpr float TurnThreshold = 45.f;
-constexpr float FullTurnThreshold = 135.f;
 
 UTurnInPlaceComponent::UTurnInPlaceComponent()
 {
@@ -55,7 +50,6 @@ void UTurnInPlaceComponent::ProcessCharacterRotation()
 	}
 }
 
-
 void UTurnInPlaceComponent::TurnMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	bIsTurning = false;
@@ -64,15 +58,15 @@ void UTurnInPlaceComponent::TurnMontageEnded(UAnimMontage* Montage, bool bInterr
 void UTurnInPlaceComponent::DetermineTurnAction()
 {
 	// YawDelta를 이용하여 적절한 회전 액션 결정
-	if(abs(YawDelta) > TurnThreshold)
+	if(FMath::Abs(YawDelta) > TurnThreshold)
 	{
-		if(abs(YawDelta) > FullTurnThreshold)
+		if(FMath::Abs(YawDelta) > FullTurnThreshold)
 		{
-			PlayTurnMontageBasedOnYaw(YawDelta, "TurnRight180", "TurnLeft180");
+			PlayTurnMontageBasedOnYaw(YawDelta, "Right180", "Left180");
 		}
 		else
 		{
-			PlayTurnMontageBasedOnYaw(YawDelta, "TurnRight90", "TurnLeft90");
+			PlayTurnMontageBasedOnYaw(YawDelta, "Right90", "Left90");
 		}
 	}
 }
@@ -98,17 +92,17 @@ bool UTurnInPlaceComponent::CanTurnInPlace() const
 void UTurnInPlaceComponent::PlayTurnMontageBasedOnYaw(const float Yaw, const FString& RightTurn, const FString& LeftTurn)
 {
 	// Yaw 값에 따라 오른쪽 또는 왼쪽 회전 몽타주 재생
-	const FString& MontageName = Yaw > 0 ? RightTurn : LeftTurn;
-	UAnimMontage* MontageToPlay = TurnMontage.Find(MontageName)->Get();
+	const FString& SectionName = Yaw > 0 ? RightTurn : LeftTurn;
 
 	// 몽타주 재생 및 회전 상태 설정
-	if(MontageToPlay && !bIsTurning)
+	if(TurnInPlaceMontage && !bIsTurning)
 	{
 		FOnMontageEnded MontageEnded;
 		MontageEnded.BindUObject(this,&UTurnInPlaceComponent::TurnMontageEnded);
 		bIsTurning = true;
-		AnimInstance->Montage_Play(MontageToPlay, 1.f);
-		AnimInstance->Montage_SetEndDelegate(MontageEnded,MontageToPlay);
+		AnimInstance->Montage_Play(TurnInPlaceMontage, 1.f);
+		AnimInstance->Montage_JumpToSection(*SectionName,TurnInPlaceMontage);
+		AnimInstance->Montage_SetEndDelegate(MontageEnded,TurnInPlaceMontage);
 	}
 }
 
