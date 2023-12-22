@@ -21,8 +21,6 @@ protected:
 	/**
 	 * member method
 	 */
-	// 제자리 회전
-	void TurnInPlace();
 
 	// 머리 회전
 	void CalcHeadRotation(const float MaxLeftRight, const float MaxUpDown, const float Speed, const float Delta);
@@ -63,24 +61,6 @@ private:
 	// Forward Input Value
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
 	float ForwardInputValue = 0.f;
-
-#pragma region TurnInPlace
-	float MovementOffsetYaw;
-	float LastMovementOffsetYaw;
-	
-	// 현재 프레임의 Yaw
-	float CharacterYaw = 0.f;
-	// 이전 프레임의 Yaw
-	float CharacterYawLastFrame = 0.f;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float RootYawOffset = 0.f;;
-
-	// 현재 프레임의 회전 커브 값
-	float RotationCurve;
-
-	// 마지막 프레임의 회전 커브 값
-	float RotationCurveLastFrame;
 
 #pragma region HeadRotation
 	// 머리 회전 값(transform modify bone - head)
