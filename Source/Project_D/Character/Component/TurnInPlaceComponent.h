@@ -52,9 +52,13 @@ private:
 	UPROPERTY()
 	bool bIsTurning = false;
 
-	//TurnInPlace Montage
+	// Stand TurnInPlace Montage
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "TurnInPlace", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAnimMontage> TurnInPlaceMontage;
+	TObjectPtr<UAnimMontage> StandTurnInPlaceMontage;
+
+	// Crouch TurnInPlace Montage
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "TurnInPlace", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> CrouchTurnInPlaceMontage;
 	
 	double YawDelta;
 

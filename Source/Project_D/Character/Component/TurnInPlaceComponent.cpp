@@ -85,8 +85,7 @@ bool UTurnInPlaceComponent::CanTurnInPlace() const
 {
 	// 캐릭터가 떨어지지 않고, 속도가 0 이하이며, 웅크리지 않은 상태인지 확인
 	return !OwnerCharacter->GetCharacterMovement()->IsFalling() &&
-		   OwnerCharacter->GetVelocity().Size2D() <= 0.f &&
-		   !OwnerCharacter->GetIsCrouching();
+		   OwnerCharacter->GetVelocity().Size2D() <= 0.f;
 }
 
 void UTurnInPlaceComponent::PlayTurnMontageBasedOnYaw(const float Yaw, const FString& RightTurn, const FString& LeftTurn)
@@ -95,14 +94,24 @@ void UTurnInPlaceComponent::PlayTurnMontageBasedOnYaw(const float Yaw, const FSt
 	const FString& SectionName = Yaw > 0 ? RightTurn : LeftTurn;
 
 	// 몽타주 재생 및 회전 상태 설정
-	if(TurnInPlaceMontage && !bIsTurning)
+	if(StandTurnInPlaceMontage &&  CrouchTurnInPlaceMontage &&!bIsTurning)
 	{
 		FOnMontageEnded MontageEnded;
 		MontageEnded.BindUObject(this,&UTurnInPlaceComponent::TurnMontageEnded);
 		bIsTurning = true;
-		AnimInstance->Montage_Play(TurnInPlaceMontage, 1.f);
-		AnimInstance->Montage_JumpToSection(*SectionName,TurnInPlaceMontage);
-		AnimInstance->Montage_SetEndDelegate(MontageEnded,TurnInPlaceMontage);
+		
+		if(OwnerCharacter->GetIsCrouching())
+		{
+			AnimInstance->Montage_Play(CrouchTurnInPlaceMontage, 1.f);
+			AnimInstance->Montage_JumpToSection(*SectionName,CrouchTurnInPlaceMontage);
+			AnimInstance->Montage_SetEndDelegate(MontageEnded,CrouchTurnInPlaceMontage);
+		}
+		else
+		{
+			AnimInstance->Montage_Play(StandTurnInPlaceMontage, 1.f);
+			AnimInstance->Montage_JumpToSection(*SectionName,StandTurnInPlaceMontage);
+			AnimInstance->Montage_SetEndDelegate(MontageEnded,StandTurnInPlaceMontage);
+		}
 	}
 }
 

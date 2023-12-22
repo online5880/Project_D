@@ -11,6 +11,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimInstance.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(PDCharacter)
 
@@ -124,32 +126,35 @@ void APDCharacter::Walk(const FInputActionValue& Value)
 
 void APDCharacter::Crouching(const FInputActionValue& Value)
 {
-	const bool CanCrouching = !bIsCrouching;
+	if(!TurnInPlaceComponent->GetIsTurning())
+	{
+		const bool CanCrouching = !bIsCrouching;
 
-	if(CanCrouching)
-	{
-		bIsCrouching = true;
-		Crouch();
-	}
-	else
-	{
-		const FVector Start = GetActorLocation();
-		const FVector End = (GetActorUpVector() * 100 + Start);
-		FHitResult HitResult;
-		UKismetSystemLibrary::LineTraceSingle(
-			GetWorld(),
-			Start,
-			End,
-			TraceTypeQuery1,
-			false,
-			TArray<AActor*>(),
-			EDrawDebugTrace::None,
-			HitResult,
-			true);
-		if (!HitResult.bBlockingHit)
+		if(CanCrouching)
 		{
-			bIsCrouching = false;
-			UnCrouch();
+			bIsCrouching = true;
+			Crouch();
+		}
+		else
+		{
+			const FVector Start = GetActorLocation();
+			const FVector End = (GetActorUpVector() * 100 + Start);
+			FHitResult HitResult;
+			UKismetSystemLibrary::LineTraceSingle(
+				GetWorld(),
+				Start,
+				End,
+				TraceTypeQuery1,
+				false,
+				TArray<AActor*>(),
+				EDrawDebugTrace::None,
+				HitResult,
+				true);
+			if (!HitResult.bBlockingHit)
+			{
+				bIsCrouching = false;
+				UnCrouch();
+			}
 		}
 	}
 }
