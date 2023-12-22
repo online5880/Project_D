@@ -15,7 +15,6 @@ public:
 	UTurnInPlaceComponent();
 	virtual void BeginPlay() override;
 	
-
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 protected:
@@ -49,15 +48,25 @@ private:
 	UPROPERTY()
 	TObjectPtr<UPDAnimInstance> AnimInstance;
 
-	// 돌고 있는지
+	// 회전 중인지
 	UPROPERTY()
 	bool bIsTurning = false;
 
-	/**
-	 * @brief Montage Map (Key:이름, Value:Montage)
-	 */
+	//TurnInPlace Montage
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "TurnInPlace", meta = (AllowPrivateAccess = "true"))
-	TMap<FString,TObjectPtr<UAnimMontage>> TurnMontage;
+	TObjectPtr<UAnimMontage> TurnInPlaceMontage;
 	
 	double YawDelta;
+
+	// 회전 임계값
+	UPROPERTY(EditAnywhere,BlueprintReadOnly ,Category = "TurnInPlace", meta = (AllowPrivateAccess = "true"))
+	float TurnThreshold = 45.f;
+
+	// 최대 회전 임계값
+	UPROPERTY(EditAnywhere,BlueprintReadOnly ,Category = "TurnInPlace", meta = (AllowPrivateAccess = "true"))
+	float FullTurnThreshold = 135.f;
+
+public:
+	// bIsTurning Getter
+	FORCEINLINE bool GetIsTurning() const {return bIsTurning;}
 };
