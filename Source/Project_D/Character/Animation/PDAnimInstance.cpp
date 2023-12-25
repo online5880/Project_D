@@ -2,6 +2,7 @@
 #include "AnimGraphRuntime/Public/KismetAnimationLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Project_D/Character/PDCharacter.h"
 
 UPDAnimInstance::UPDAnimInstance()
@@ -75,5 +76,38 @@ void UPDAnimInstance::CalcHeadRotation(const float MaxLeftRight, const float Max
 	else
 	{
 		HeadRotation = UKismetMathLibrary::RInterpTo(HeadRotation, ClampedRotation, Delta, Speed);
+	}
+}
+
+void UPDAnimInstance::AnimNotify_FootStep_R()
+{
+	FootSphereTrace(FName("Foot_R"));
+}
+
+void UPDAnimInstance::AnimNotify_FootStep_L()
+{
+	FootSphereTrace(FName("Foot_L"));
+}
+
+void UPDAnimInstance::FootSphereTrace(const FName& FootSocket)
+{
+	if(Character && GetWorld())
+	{
+		const UWorld* World = GetWorld();
+		const FVector SocketLocation = Character->GetMesh()->GetSocketLocation(FootSocket);
+
+		FHitResult HitResult;
+		
+		UKismetSystemLibrary::SphereTraceSingle(
+			World,
+			SocketLocation,
+			SocketLocation,
+			10.f,
+			TraceTypeQuery1,
+			false,
+			TArray<AActor*>(),
+			EDrawDebugTrace::ForDuration,
+			HitResult,
+			true);
 	}
 }

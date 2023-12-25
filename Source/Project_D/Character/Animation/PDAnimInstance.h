@@ -25,6 +25,13 @@ protected:
 	// 머리 회전
 	void CalcHeadRotation(const float MaxLeftRight, const float MaxUpDown, const float Speed, const float Delta);
 
+	UFUNCTION()
+	void AnimNotify_FootStep_R();
+
+	UFUNCTION()
+	void AnimNotify_FootStep_L();
+
+	void FootSphereTrace(const FName& FootSocket);
 private:
 	// 캐릭터 클래스
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))
