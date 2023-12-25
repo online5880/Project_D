@@ -52,11 +52,11 @@ private:
 	UPROPERTY()
 	bool bIsTurning = false;
 
-	// Stand TurnInPlace Montage
+	// 서있을 때 회전 몽타주
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "TurnInPlace", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> StandTurnInPlaceMontage;
 
-	// Crouch TurnInPlace Montage
+	// 앉아 있을 때 회전 몽타주
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "TurnInPlace", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> CrouchTurnInPlaceMontage;
 	

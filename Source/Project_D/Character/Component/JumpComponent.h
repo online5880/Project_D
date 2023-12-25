@@ -9,6 +9,10 @@ class UPDAnimInstance;
 class APDCharacter;
 class UAnimMontage;
 
+/**
+ * 점프 컴포넌트
+ * TODO 추후 변경 또는 삭제
+ */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class PROJECT_D_API UJumpComponent : public UActorComponent
 {

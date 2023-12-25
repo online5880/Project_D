@@ -100,18 +100,10 @@ void UTurnInPlaceComponent::PlayTurnMontageBasedOnYaw(const float Yaw, const FSt
 		MontageEnded.BindUObject(this,&UTurnInPlaceComponent::TurnMontageEnded);
 		bIsTurning = true;
 		
-		if(OwnerCharacter->GetIsCrouching())
-		{
-			AnimInstance->Montage_Play(CrouchTurnInPlaceMontage, 1.f);
-			AnimInstance->Montage_JumpToSection(*SectionName,CrouchTurnInPlaceMontage);
-			AnimInstance->Montage_SetEndDelegate(MontageEnded,CrouchTurnInPlaceMontage);
-		}
-		else
-		{
-			AnimInstance->Montage_Play(StandTurnInPlaceMontage, 1.f);
-			AnimInstance->Montage_JumpToSection(*SectionName,StandTurnInPlaceMontage);
-			AnimInstance->Montage_SetEndDelegate(MontageEnded,StandTurnInPlaceMontage);
-		}
+		UAnimMontage* TurnMontage = OwnerCharacter->GetIsCrouching() ? CrouchTurnInPlaceMontage : StandTurnInPlaceMontage;
+		AnimInstance->Montage_Play(TurnMontage, 1.f);
+		AnimInstance->Montage_JumpToSection(*SectionName, TurnMontage);
+		AnimInstance->Montage_SetEndDelegate(MontageEnded, TurnMontage);
 	}
 }
 
