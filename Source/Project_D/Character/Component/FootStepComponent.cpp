@@ -5,12 +5,11 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
-
 #include "Sound/SoundCue.h"
 
 UFootStepComponent::UFootStepComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// 오디오 컴포넌트 초기화
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Component"));
@@ -26,13 +25,6 @@ void UFootStepComponent::BeginPlay()
 	{
 		Character = Cast<ACharacter>(GetOwner());
 	}
-}
-
-void UFootStepComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                       FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
 }
 
 void UFootStepComponent::FootStep(const ECharacterFoot Foot) const

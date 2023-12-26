@@ -45,8 +45,6 @@ class PROJECT_D_API UFootStepComponent : public UActorComponent
 public:
 	UFootStepComponent();
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-							   FActorComponentTickFunction* ThisTickFunction) override;
 	
 	// Foot Step(Sound, Effect...)
 	void FootStep(const ECharacterFoot Foot) const;

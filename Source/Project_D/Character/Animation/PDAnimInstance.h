@@ -25,9 +25,11 @@ protected:
 	// 머리 회전
 	void CalcHeadRotation(const float MaxLeftRight, const float MaxUpDown, const float Speed, const float Delta);
 
+	// 애님노티파이 - FootStep Right
 	UFUNCTION()
 	void AnimNotify_FootStep_R();
 
+	// 애님노티파이 - FootStep Left
 	UFUNCTION()
 	void AnimNotify_FootStep_L();
 private:

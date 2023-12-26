@@ -10,15 +10,15 @@ public class Project_D : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
-			"Core", 
-			"CoreUObject", 
-			"Engine", 
+			"Core",
+			"CoreUObject",
+			"Engine",
 			"InputCore",
 			"EnhancedInput",
-			"AnimGraph" ,
+			"AnimGraph",
 			"AnimGraphRuntime",
-			"PhysicsCore",
-			"MetasoundEngine"
+			"MetasoundEngine",
+			"PhysicsCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
