@@ -30,8 +30,6 @@ protected:
 
 	UFUNCTION()
 	void AnimNotify_FootStep_L();
-
-	void FootSphereTrace(const FName& FootSocket);
 private:
 	// 캐릭터 클래스
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))

@@ -13,6 +13,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
+#include "Component/FootStepComponent.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(PDCharacter)
 
@@ -38,6 +39,7 @@ APDCharacter::APDCharacter()
 
 	TurnInPlaceComponent = CreateDefaultSubobject<UTurnInPlaceComponent>(TEXT("TurnInPlaceComponent"));
 	JumpComponent = CreateDefaultSubobject<UJumpComponent>(TEXT("JumpComponent"));
+	FootStepComponent = CreateDefaultSubobject<UFootStepComponent>(TEXT("FootStepComponent"));
 
 	bIsWalk = false;
 }
@@ -167,7 +169,6 @@ void APDCharacter::Look(const FInputActionValue& Value)
 	{
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
-
 	}
 }
 

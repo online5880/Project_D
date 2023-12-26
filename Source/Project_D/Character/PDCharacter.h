@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "PDCharacter.generated.h"
 
+class UFootStepComponent;
 class UJumpComponent;
 class UTurnInPlaceComponent;
 class UInputAction;
@@ -53,12 +54,16 @@ private:
 	TObjectPtr<UCameraComponent> CameraComponent;
 
 	// TurnInPlace Component
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Component, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UTurnInPlaceComponent> TurnInPlaceComponent;
 
 	// Jump Component
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Component, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UJumpComponent> JumpComponent;
+
+	// Foot Step Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Component, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UFootStepComponent> FootStepComponent;
 #pragma region InputAction
 	// 맵핑 콘텍스트
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -106,4 +111,5 @@ public:
 	FORCEINLINE float GetForwardInputValue() const { return ForwardInputValue; }
 	FORCEINLINE float GetRightInputValue() const { return RightInputValue; }
 	FORCEINLINE bool GetIsCrouching() const { return bIsCrouching; }
+	FORCEINLINE UFootStepComponent* GetFootStepComponent() const {return FootStepComponent;}
 };
