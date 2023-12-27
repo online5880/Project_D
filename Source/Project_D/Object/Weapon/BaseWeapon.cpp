@@ -47,8 +47,12 @@ void ABaseWeapon::Reload()
 	IAttackInterface::Reload();
 }
 
+void ABaseWeapon::Interact()
+{
+}
+
 void ABaseWeapon::OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 }
 

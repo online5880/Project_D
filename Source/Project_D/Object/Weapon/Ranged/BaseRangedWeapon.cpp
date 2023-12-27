@@ -1,12 +1,9 @@
 ﻿#include "BaseRangedWeapon.h"
-
 #include "Engine/Engine.h"
-
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BaseRangedWeapon)
 
 ABaseRangedWeapon::ABaseRangedWeapon()
 {
-
 	PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -31,18 +28,27 @@ void ABaseRangedWeapon::Reload()
 	Super::Reload();
 }
 
+void ABaseRangedWeapon::Interact()
+{
+	Super::Interact();
+
+	if(bCanInteract)
+	{
+		
+	}
+}
+
 void ABaseRangedWeapon::OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnBeginOverlapEvent(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
-
-	GEngine->AddOnScreenDebugMessage(-1,3.f,FColor::Orange,__FUNCTION__);
+	bCanInteract = true;
 }
 
 void ABaseRangedWeapon::OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	Super::OnEndOverlapEvent(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
-	GEngine->AddOnScreenDebugMessage(-1,3.f,FColor::Orange,__FUNCTION__);
+	bCanInteract = false;
 }
 
