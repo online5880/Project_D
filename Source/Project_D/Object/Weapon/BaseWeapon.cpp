@@ -1,28 +1,59 @@
-﻿$COPYRIGHT_LINE$
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-$MY_HEADER_INCLUDE_DIRECTIVE$
+#include "BaseWeapon.h"
 
+#include "Components/SkeletalMeshComponent.h"
+#include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 
-// Sets default values
-$PREFIX$$UNPREFIXED_CLASS_NAME$::$PREFIX$$UNPREFIXED_CLASS_NAME$()
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BaseWeapon)
+
+ABaseWeapon::ABaseWeapon()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
+	SphereComponent->SetSphereRadius(OverlapRadius);
+	SetRootComponent(SphereComponent);
+
+	WeaponStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	WeaponStaticMeshComponent->SetupAttachment(GetRootComponent());
+
+	WeaponSkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Skeletal Mesh"));
+	WeaponSkeletalMeshComponent->SetupAttachment(GetRootComponent());
 }
 
-// Called when the game starts or when spawned
-void $PREFIX$$UNPREFIXED_CLASS_NAME$::BeginPlay()
+void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	$END$
+
+	SphereComponent->OnComponentBeginOverlap.AddDynamic(this,&ThisClass::OnBeginOverlapEvent);
+	SphereComponent->OnComponentEndOverlap.AddDynamic(this,&ThisClass::OnEndOverlapEvent);
 }
 
-// Called every frame
-void $PREFIX$$UNPREFIXED_CLASS_NAME$::Tick(float DeltaTime)
+void ABaseWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+void ABaseWeapon::Attack()
+{
+	IAttackInterface::Attack();
+}
+
+void ABaseWeapon::Reload()
+{
+	IAttackInterface::Reload();
+}
+
+void ABaseWeapon::OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+}
+
+void ABaseWeapon::OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
 }
 

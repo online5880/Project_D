@@ -1,42 +1,48 @@
-﻿#include "BaseRifle.h"
-#include UE_INLINE_GENERATED_CPP_BY_NAME(BaseRifle)
+﻿#include "BaseRangedWeapon.h"
 
-ABaseRifle::ABaseRifle()
+#include "Engine/Engine.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BaseRangedWeapon)
+
+ABaseRangedWeapon::ABaseRangedWeapon()
 {
 
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void ABaseRifle::BeginPlay()
+void ABaseRangedWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-void ABaseRifle::Tick(float DeltaTime)
+void ABaseRangedWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ABaseRifle::Attack()
+void ABaseRangedWeapon::Attack()
 {
 	Super::Attack();
 }
 
-void ABaseRifle::Reload()
+void ABaseRangedWeapon::Reload()
 {
 	Super::Reload();
 }
 
-void ABaseRifle::OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ABaseRangedWeapon::OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnBeginOverlapEvent(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+
+	GEngine->AddOnScreenDebugMessage(-1,3.f,FColor::Orange,__FUNCTION__);
 }
 
-void ABaseRifle::OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ABaseRangedWeapon::OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	Super::OnEndOverlapEvent(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+	GEngine->AddOnScreenDebugMessage(-1,3.f,FColor::Orange,__FUNCTION__);
 }
 
