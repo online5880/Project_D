@@ -1,16 +1,16 @@
 ﻿#pragma once
 
 #include "Project_D/Object/Weapon/BaseWeapon.h"
-#include "BaseRifle.generated.h"
+#include "BaseRangedWeapon.generated.h"
 
 UCLASS()
-class PROJECT_D_API ABaseRifle : public ABaseWeapon
+class PROJECT_D_API ABaseRangedWeapon : public ABaseWeapon
 {
 	GENERATED_BODY()
 
 public:
 
-	ABaseRifle();
+	ABaseRangedWeapon();
 
 protected:
 

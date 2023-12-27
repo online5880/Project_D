@@ -1,7 +1,7 @@
-﻿$COPYRIGHT_LINE$
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-$MY_HEADER_INCLUDE_DIRECTIVE$
+#include "AttackInterface.h"
 
 
-// Add default functionality here for any I$UNPREFIXED_CLASS_NAME$ functions that are not pure virtual.
+// Add default functionality here for any IAttackInterface functions that are not pure virtual.
