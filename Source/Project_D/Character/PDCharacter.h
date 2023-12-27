@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "PDCharacter.generated.h"
 
+class UFootStepComponent;
 class UJumpComponent;
 class UTurnInPlaceComponent;
 class UInputAction;
@@ -46,19 +47,24 @@ private:
 #pragma region Component
 	// 스프링암
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USpringArmComponent> SpringArmComponent;
+	TObjectPtr<USpringArmComponent>		SpringArmComponent;
 
 	// 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCameraComponent> CameraComponent;
+	TObjectPtr<UCameraComponent>		CameraComponent;
 
 	// TurnInPlace Component
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UTurnInPlaceComponent> TurnInPlaceComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Component, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UTurnInPlaceComponent>	TurnInPlaceComponent;
 
 	// Jump Component
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UJumpComponent> JumpComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Component, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UJumpComponent>			JumpComponent;
+
+	// Foot Step Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Component, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UFootStepComponent>		FootStepComponent;
+	
 #pragma region InputAction
 	// 맵핑 콘텍스트
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -101,9 +107,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsCrouching;
 
-
 public:
-	FORCEINLINE float GetForwardInputValue() const { return ForwardInputValue; }
-	FORCEINLINE float GetRightInputValue() const { return RightInputValue; }
-	FORCEINLINE bool GetIsCrouching() const { return bIsCrouching; }
+	FORCEINLINE float				GetForwardInputValue() const { return ForwardInputValue; }
+	FORCEINLINE float				GetRightInputValue() const { return RightInputValue; }
+	FORCEINLINE bool				GetIsCrouching() const { return bIsCrouching; }
+	FORCEINLINE UFootStepComponent* GetFootStepComponent() const {return FootStepComponent;}
 };

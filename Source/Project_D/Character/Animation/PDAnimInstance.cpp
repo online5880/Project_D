@@ -4,6 +4,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_D/Character/PDCharacter.h"
+#include "Project_D/Character/Component/FootStepComponent.h"
 
 UPDAnimInstance::UPDAnimInstance()
 {
@@ -81,33 +82,16 @@ void UPDAnimInstance::CalcHeadRotation(const float MaxLeftRight, const float Max
 
 void UPDAnimInstance::AnimNotify_FootStep_R()
 {
-	FootSphereTrace(FName("Foot_R"));
+	if(Character->GetFootStepComponent())
+	{
+		Character->GetFootStepComponent()->FootStep(ECharacterFoot::ECF_Right);
+	}
 }
 
 void UPDAnimInstance::AnimNotify_FootStep_L()
 {
-	FootSphereTrace(FName("Foot_L"));
-}
-
-void UPDAnimInstance::FootSphereTrace(const FName& FootSocket)
-{
-	if(Character && GetWorld())
+	if(Character->GetFootStepComponent())
 	{
-		const UWorld* World = GetWorld();
-		const FVector SocketLocation = Character->GetMesh()->GetSocketLocation(FootSocket);
-
-		FHitResult HitResult;
-		
-		UKismetSystemLibrary::SphereTraceSingle(
-			World,
-			SocketLocation,
-			SocketLocation,
-			10.f,
-			TraceTypeQuery1,
-			false,
-			TArray<AActor*>(),
-			EDrawDebugTrace::ForDuration,
-			HitResult,
-			true);
+		Character->GetFootStepComponent()->FootStep(ECharacterFoot::ECF_Left);
 	}
 }
