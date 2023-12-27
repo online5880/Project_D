@@ -16,7 +16,6 @@ UFootStepComponent::UFootStepComponent()
 	AudioComponent->bAutoActivate = false;
 }
 
-
 void UFootStepComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -67,7 +66,8 @@ void UFootStepComponent::FootStepSphereTrace(const ECharacterFoot Foot) const
 	const FVector End = Start - FVector(0.f, 0.f, TraceOffset);
     
 	FHitResult HitResult;
-	TArray<AActor*> IgnoreActor{ GetOwner() };
+	TArray<AActor*> IgnoreActors;
+	IgnoreActors.AddUnique(GetOwner());
         
 	// Sphere Trace 실행
 	UKismetSystemLibrary::SphereTraceSingle(
@@ -77,7 +77,7 @@ void UFootStepComponent::FootStepSphereTrace(const ECharacterFoot Foot) const
 		TraceRadius,
 		TraceTypeQuery1,
 		false,
-		IgnoreActor,
+		IgnoreActors,
 		bDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None,
 		HitResult,
 		true);
@@ -125,7 +125,7 @@ void UFootStepComponent::PlayFootStepSound(const FFootSoundStruct& FootSoundStru
 			break;
 		default: ;
 		}
-		if(PlaySoundCue)
+		if(PlaySoundCue && bEnableSound)
 		{
 			AudioComponent->Stop();
 			AudioComponent->SetSound(PlaySoundCue);

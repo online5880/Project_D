@@ -75,11 +75,11 @@ private:
 
 	// 오른쪽 발 Bone 이름
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Sound", meta = (AllowPrivateAccess = "true"))
-	FName FootRightBoneName;
+	FName FootRightBoneName = "foot_r";
 
 	// 왼쪽 발 Bone 이름
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Sound", meta = (AllowPrivateAccess = "true"))
-	FName FootLeftBoneName;
+	FName FootLeftBoneName = "foot_l";
 
 	// Trace Offset(-z value)
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Sound", meta = (AllowPrivateAccess = "true"))
@@ -91,5 +91,9 @@ private:
 
 	// 디버그
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Debug", meta = (AllowPrivateAccess = "true"))
-	bool bDebug;
+	bool bDebug = false;
+
+	// 소리 On/Off
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Debug", meta = (AllowPrivateAccess = "true"))
+	bool bEnableSound = false;
 };
