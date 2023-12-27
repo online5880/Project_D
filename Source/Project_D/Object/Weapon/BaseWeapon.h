@@ -9,7 +9,7 @@
 class USphereComponent;
 
 UCLASS()
-class PROJECT_D_API ABaseWeapon : public AActor, public IAttackInterface, IInteractInterface
+class PROJECT_D_API ABaseWeapon : public AActor, public IAttackInterface, public IInteractInterface
 {
 	GENERATED_BODY()
 
@@ -48,6 +48,10 @@ protected:
 
 	// 상호작용 가능한지
 	bool bCanInteract;
+
+	// Attach Socket Name
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Weapon", meta = (AllowPrivateAccess = "true"))
+	FName AttachSocketName = NAME_None;
 	
 private:
 	// Sphere Component

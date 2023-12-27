@@ -14,6 +14,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Component/FootStepComponent.h"
+#include "Project_D/Object/Weapon/BaseWeapon.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(PDCharacter)
 
@@ -84,6 +85,7 @@ void APDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ThisClass::Crouching);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 		EnhancedInputComponent->BindAction(JumpAction,ETriggerEvent::Triggered,this,&ThisClass::Jump);
+		EnhancedInputComponent->BindAction(InteractAction,ETriggerEvent::Triggered,this,&ThisClass::Interaction);
 	}
 }
 
@@ -92,6 +94,27 @@ void APDCharacter::Jump()
 	if(JumpComponent)
 	{
 		//JumpComponent->Jump(GetVelocity().Size2D());
+	}
+}
+
+void APDCharacter::Interact()
+{
+	if(OverlappedActor)
+	{
+		if(IInteractInterface* Interface = Cast<IInteractInterface>(OverlappedActor))
+		{
+			Interface->Interact();
+		}
+	}
+}
+
+void APDCharacter::PickupWeapon(ABaseWeapon* Weapon, const FName& SocketName)
+{
+	EquippedWeapon = Weapon;
+
+	if(EquippedWeapon)
+	{
+		EquippedWeapon->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetIncludingScale,SocketName);	
 	}
 }
 
@@ -170,6 +193,11 @@ void APDCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void APDCharacter::Interaction(const FInputActionValue& Value)
+{
+	Interact();
 }
 
 void APDCharacter::SmoothCameraRotation(float DeltaTime)

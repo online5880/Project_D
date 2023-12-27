@@ -2,6 +2,7 @@
 
 #include "../../../../../Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/InputActionValue.h"
 #include "GameFramework/Character.h"
+#include "Project_D/Interface/InteractInterface.h"
 #include "PDCharacter.generated.h"
 
 class UFootStepComponent;
@@ -13,7 +14,7 @@ class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class PROJECT_D_API APDCharacter : public ACharacter
+class PROJECT_D_API APDCharacter : public ACharacter, public IInteractInterface
 {
 	GENERATED_BODY()
 
@@ -31,6 +32,11 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	virtual void Jump() override;
+
+	// IInteract Interface
+	virtual void Interact() override;
+	virtual void PickupWeapon(ABaseWeapon* Weapon, const FName& SocketName) override;
+	
 	/**
 	 * member method
 	 */
@@ -39,6 +45,7 @@ protected:
 	void Walk(const FInputActionValue& Value);
 	void Crouching(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Interaction(const FInputActionValue& Value);
 
 	// 카메라 회전을 부드럽게 해준다.
 	void SmoothCameraRotation(float DeltaTime);
@@ -89,7 +96,11 @@ private:
 	// 걷기 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> CrouchAction;
-
+	
+	// 상호작용 액션
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> InteractAction;
+	
 #pragma region Movement Variables
 	// 움직임 값 - X
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
@@ -107,9 +118,20 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsCrouching;
 
+#pragma region Weapon
+	// 장착중인 무기
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ABaseWeapon> EquippedWeapon;
+
+#pragma region Object
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<AActor> OverlappedActor;
+
 public:
 	FORCEINLINE float				GetForwardInputValue() const { return ForwardInputValue; }
 	FORCEINLINE float				GetRightInputValue() const { return RightInputValue; }
 	FORCEINLINE bool				GetIsCrouching() const { return bIsCrouching; }
 	FORCEINLINE UFootStepComponent* GetFootStepComponent() const {return FootStepComponent;}
+	FORCEINLINE AActor*				GetOverlappedActor() const {return OverlappedActor;}
+	FORCEINLINE void				SetOverlappedActor(AActor* Actor) {OverlappedActor = Actor;}
 };
