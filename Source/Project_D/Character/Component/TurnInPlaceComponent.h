@@ -60,6 +60,10 @@ private:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "TurnInPlace", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> CrouchTurnInPlaceMontage;
 	
+	// 총 들고 있을 때 회전 몽타주
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "TurnInPlace", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> RifleTurnInPlaceMontage;
+	
 	double YawDelta;
 
 	// 회전 임계값
