@@ -94,16 +94,28 @@ void UTurnInPlaceComponent::PlayTurnMontageBasedOnYaw(const float Yaw, const FSt
 	const FString& SectionName = Yaw > 0 ? RightTurn : LeftTurn;
 
 	// 몽타주 재생 및 회전 상태 설정
-	if(StandTurnInPlaceMontage &&  CrouchTurnInPlaceMontage &&!bIsTurning)
+	if(StandTurnInPlaceMontage &&  CrouchTurnInPlaceMontage && RifleTurnInPlaceMontage &&!bIsTurning)
 	{
 		FOnMontageEnded MontageEnded;
 		MontageEnded.BindUObject(this,&UTurnInPlaceComponent::TurnMontageEnded);
-		bIsTurning = true;
-		
-		UAnimMontage* TurnMontage = OwnerCharacter->GetIsCrouching() ? CrouchTurnInPlaceMontage : StandTurnInPlaceMontage;
-		AnimInstance->Montage_Play(TurnMontage, 1.f);
-		AnimInstance->Montage_JumpToSection(*SectionName, TurnMontage);
-		AnimInstance->Montage_SetEndDelegate(MontageEnded, TurnMontage);
+
+		UAnimMontage* TurnMontage = nullptr;
+		if(OwnerCharacter->GetCharacterCombatState() == ECharacterCombatState::ECCS_Rifle)
+		{
+			TurnMontage = RifleTurnInPlaceMontage;
+		}
+		else
+		{
+			TurnMontage = OwnerCharacter->GetIsCrouching() ? CrouchTurnInPlaceMontage : StandTurnInPlaceMontage;
+		}
+
+		if(TurnMontage)
+		{
+			bIsTurning = true;
+			AnimInstance->Montage_Play(TurnMontage, 1.f);
+			AnimInstance->Montage_JumpToSection(*SectionName, TurnMontage);
+			AnimInstance->Montage_SetEndDelegate(MontageEnded, TurnMontage);
+		}
 	}
 }
 

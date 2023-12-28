@@ -1,11 +1,11 @@
 ﻿#include "FootStepComponent.h"
-
 #include "MetasoundSource.h"
 #include "Components/AudioComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
+#include UE_INLINE_GENERATED_CPP_BY_NAME(FootStepComponent)
 
 UFootStepComponent::UFootStepComponent()
 {

@@ -37,7 +37,8 @@ void UPDAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		bIsCrouching = Character->GetIsCrouching();
 		ForwardInputValue = Character->GetForwardInputValue();
 		RightInputValue = Character->GetRightInputValue();
-
+		CombatState = Character->GetCharacterCombatState();
+		
 		/*const FRotator AimRotation = Character->GetBaseAimRotation();
 		const FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(Character->GetVelocity());
 		MovementOffsetYaw = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation,AimRotation).Yaw;

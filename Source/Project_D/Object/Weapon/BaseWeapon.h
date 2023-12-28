@@ -3,12 +3,22 @@
 #pragma once
 #include "GameFramework/Actor.h"
 #include "Project_D/Interface/AttackInterface.h"
+#include "Project_D/Interface/InteractInterface.h"
 #include "BaseWeapon.generated.h"
 
 class USphereComponent;
 
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	EWT_Rifle UMETA(DisplayName = "Rifle"),
+	EWT_Pistol UMETA(DisplayName = "Pistol"),
+	EWT_DefaultMAX UMETA(DisplayName = "MAX")
+};
+
+
 UCLASS()
-class PROJECT_D_API ABaseWeapon : public AActor, public IAttackInterface
+class PROJECT_D_API ABaseWeapon : public AActor, public IAttackInterface, public IInteractInterface
 {
 	GENERATED_BODY()
 
@@ -24,12 +34,34 @@ protected:
 	virtual void Attack() override;
 	virtual void Reload() override;
 
+	// IInteractInterface
+	virtual void Interact() override;
+
 	// Overlap
 	UFUNCTION()
 	virtual void OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 	UFUNCTION()
 	virtual void OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	/**
+	 * member varialbes
+	 */
+	
+	// Overlap 범위
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Weapon", meta = (AllowPrivateAccess = "true"))
+	float OverlapRadius = 30.f;
+	
+	// 무기 데미지
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Weapon", meta = (AllowPrivateAccess = "true"))
+	float Damage = 0.f;
+
+	// 상호작용 가능한지
+	bool bCanInteract;
+
+	// Attach Socket Name
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Weapon", meta = (AllowPrivateAccess = "true"))
+	FName AttachSocketName = NAME_None;
+	
 private:
 	// Sphere Component
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
@@ -43,16 +75,12 @@ private:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMeshComponent> WeaponSkeletalMeshComponent;
 
-	// Overlap 범위
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Weapon", meta = (AllowPrivateAccess = "true"))
-	float OverlapRadius = 30.f;
-	
-	// 무기 데미지
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Weapon", meta = (AllowPrivateAccess = "true"))
-	float Damage = 0.f;
-
+#pragma region ENUM
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
+	EWeaponType WeaponType;
 public:
-	FORCEINLINE float GetDamage() const {return Damage;}
+	FORCEINLINE float		GetDamage() const {return Damage;}
+	FORCEINLINE EWeaponType	GetWeaponType() const {return WeaponType;}
 
 	
 };
