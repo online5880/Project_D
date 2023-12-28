@@ -25,5 +25,5 @@ public:
 	virtual void Interact() = 0;
 
 	// 무기 줍기
-	virtual void PickupWeapon(class ABaseWeapon* Weapon,const FName& SocketName){}
+	virtual void PickupWeapon(class ABaseWeapon* NewWeapon,const FName& SocketName){}
 };

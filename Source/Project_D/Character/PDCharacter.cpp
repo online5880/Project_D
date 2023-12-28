@@ -109,9 +109,9 @@ void APDCharacter::Interact()
 	}
 }
 
-void APDCharacter::PickupWeapon(ABaseWeapon* Weapon, const FName& SocketName)
+void APDCharacter::PickupWeapon(ABaseWeapon* NewWeapon, const FName& SocketName)
 {
-	EquippedWeapon = Weapon;
+	EquippedWeapon = NewWeapon;
 
 	if(EquippedWeapon)
 	{

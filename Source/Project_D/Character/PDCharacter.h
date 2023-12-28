@@ -44,7 +44,7 @@ protected:
 
 	// IInteract Interface
 	virtual void Interact() override;
-	virtual void PickupWeapon(ABaseWeapon* Weapon, const FName& SocketName) override;
+	virtual void PickupWeapon(ABaseWeapon* NewWeapon, const FName& SocketName) override;
 	
 	/**
 	 * member method
