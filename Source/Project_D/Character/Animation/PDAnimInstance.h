@@ -3,6 +3,7 @@
 #include "Animation/AnimInstance.h"
 #include "PDAnimInstance.generated.h"
 
+enum class ECharacterCombatState : uint8;
 class UCharacterMovementComponent;
 class APDCharacter;
 
@@ -73,5 +74,9 @@ private:
 	// 머리 회전 값(transform modify bone - head)
 	UPROPERTY(BlueprintReadOnly,Category = "Movement",meta = (AllowPrivateAccess = "true"))
 	FRotator HeadRotation;
+
+#pragma region ENUM
+	UPROPERTY(BlueprintReadOnly,Category = "Enum",meta = (AllowPrivateAccess = "true"))
+	ECharacterCombatState CombatState;
 	
 };

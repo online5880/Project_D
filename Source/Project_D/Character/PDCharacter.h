@@ -13,6 +13,15 @@ class UInputMappingContext;
 class UCameraComponent;
 class USpringArmComponent;
 
+UENUM(BlueprintType)
+enum class ECharacterCombatState : uint8
+{
+	ECCS_Unarmed UMETA(DisplayName = "Unarmed"),
+	ECCS_Rifle UMETA(DisplayName = "Rifle"),
+	ECCS_Pistol UMETA(DisplayName = "Pistol"),
+	ECCS_DefaultMAX UMETA(DisplayName = "MAX")
+};
+
 UCLASS()
 class PROJECT_D_API APDCharacter : public ACharacter, public IInteractInterface
 {
@@ -127,11 +136,18 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<AActor> OverlappedActor;
 
+#pragma region Enum
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	ECharacterCombatState CombatState;
+
 public:
-	FORCEINLINE float				GetForwardInputValue() const { return ForwardInputValue; }
-	FORCEINLINE float				GetRightInputValue() const { return RightInputValue; }
-	FORCEINLINE bool				GetIsCrouching() const { return bIsCrouching; }
-	FORCEINLINE UFootStepComponent* GetFootStepComponent() const {return FootStepComponent;}
-	FORCEINLINE AActor*				GetOverlappedActor() const {return OverlappedActor;}
-	FORCEINLINE void				SetOverlappedActor(AActor* Actor) {OverlappedActor = Actor;}
+#pragma region INLINE_FUNCTION
+	FORCEINLINE float					GetForwardInputValue() const { return ForwardInputValue; }
+	FORCEINLINE float					GetRightInputValue() const { return RightInputValue; }
+	FORCEINLINE bool					GetIsCrouching() const { return bIsCrouching; }
+	FORCEINLINE UFootStepComponent*		GetFootStepComponent() const {return FootStepComponent;}
+	FORCEINLINE AActor*					GetOverlappedActor() const {return OverlappedActor;}
+	FORCEINLINE void					SetOverlappedActor(AActor* Actor) {OverlappedActor = Actor;}
+	FORCEINLINE ECharacterCombatState	GetCharacterCombatState() const {return CombatState;}
+	FORCEINLINE void					SetCharacterCombatState(const ECharacterCombatState State) {CombatState = State;}
 };

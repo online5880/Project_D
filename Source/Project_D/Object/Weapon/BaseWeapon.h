@@ -8,6 +8,15 @@
 
 class USphereComponent;
 
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	EWT_Rifle UMETA(DisplayName = "Rifle"),
+	EWT_Pistol UMETA(DisplayName = "Pistol"),
+	EWT_DefaultMAX UMETA(DisplayName = "MAX")
+};
+
+
 UCLASS()
 class PROJECT_D_API ABaseWeapon : public AActor, public IAttackInterface, public IInteractInterface
 {
@@ -65,8 +74,13 @@ private:
 	// 무기 메쉬 - Skeletal Mesh
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMeshComponent> WeaponSkeletalMeshComponent;
+
+#pragma region ENUM
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
+	EWeaponType WeaponType;
 public:
-	FORCEINLINE float GetDamage() const {return Damage;}
+	FORCEINLINE float		GetDamage() const {return Damage;}
+	FORCEINLINE EWeaponType	GetWeaponType() const {return WeaponType;}
 
 	
 };

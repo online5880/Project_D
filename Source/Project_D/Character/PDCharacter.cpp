@@ -15,6 +15,7 @@
 #include "Animation/AnimInstance.h"
 #include "Component/FootStepComponent.h"
 #include "Project_D/Object/Weapon/BaseWeapon.h"
+#include "Project_D/Object/Weapon/Ranged/BaseRangedWeapon.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(PDCharacter)
 
@@ -114,7 +115,11 @@ void APDCharacter::PickupWeapon(ABaseWeapon* Weapon, const FName& SocketName)
 
 	if(EquippedWeapon)
 	{
-		EquippedWeapon->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetIncludingScale,SocketName);	
+		EquippedWeapon->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetIncludingScale,SocketName);
+		if(EquippedWeapon->GetWeaponType() == EWeaponType::EWT_Rifle)
+		{
+			CombatState = ECharacterCombatState::ECCS_Rifle;
+		}
 	}
 }
 
