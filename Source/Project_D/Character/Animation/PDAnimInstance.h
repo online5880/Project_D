@@ -26,6 +26,9 @@ protected:
 	// 머리 회전
 	void CalcHeadRotation(const float MaxLeftRight, const float MaxUpDown, const float Speed, const float Delta);
 
+	// Aim Offset
+	void CalcAimOffset(const float Speed, const float Delta);
+
 	// 애님노티파이 - FootStep Right
 	UFUNCTION()
 	void AnimNotify_FootStep_R();
@@ -74,6 +77,10 @@ private:
 	// 머리 회전 값(transform modify bone - head)
 	UPROPERTY(BlueprintReadOnly,Category = "Movement",meta = (AllowPrivateAccess = "true"))
 	FRotator HeadRotation;
+
+	// Aim Offset
+	UPROPERTY(BlueprintReadOnly,Category = "Movement",meta = (AllowPrivateAccess = "true"))
+	FRotator AimOffset;
 
 #pragma region ENUM
 	UPROPERTY(BlueprintReadOnly,Category = "Enum",meta = (AllowPrivateAccess = "true"))
