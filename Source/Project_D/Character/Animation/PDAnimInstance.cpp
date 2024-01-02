@@ -45,6 +45,7 @@ void UPDAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		*/
 		
 		CalcHeadRotation(80.f,50.f,5.f,DeltaSeconds);
+		CalcAimOffset(5.f,DeltaSeconds);
 	}
 }
 
@@ -79,6 +80,29 @@ void UPDAnimInstance::CalcHeadRotation(const float MaxLeftRight, const float Max
 	{
 		HeadRotation = UKismetMathLibrary::RInterpTo(HeadRotation, ClampedRotation, Delta, Speed);
 	}
+}
+
+void UPDAnimInstance::CalcAimOffset(const float Speed, const float Delta)
+{
+	// 캐릭터가 없으면 함수를 종료합니다.
+	if (!Character)
+		return;
+
+	// 컨트롤러와 액터의 회전값을 가져옵니다.
+	const FRotator ControlRotation = Character->GetControlRotation();
+	const FRotator ActorRotation = Character->GetActorRotation();
+
+	// 회전을 위한 새로운 회전값을 계산합니다.
+	const float YawDifference = ControlRotation.Yaw - ActorRotation.Yaw;
+	const float InvertedRoll = ControlRotation.Pitch * -1.0f;
+	const FRotator NewRotation(0.0f, YawDifference, InvertedRoll);
+
+	// 최대 회전 범위 내에서 회전을 제한합니다.
+	const float ClampedYaw = FMath::ClampAngle(NewRotation.Yaw, -30, 45);
+	const float ClampedRoll = FMath::ClampAngle(NewRotation.Roll, -45, 45);
+	const FRotator ClampedRotation(0.0f, ClampedYaw, ClampedRoll);
+
+	AimOffset = ClampedRotation;
 }
 
 void UPDAnimInstance::AnimNotify_FootStep_R()
