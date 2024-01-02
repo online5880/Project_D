@@ -72,6 +72,7 @@ void APDCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	SmoothCameraRotation(DeltaSeconds);
+	SmoothAimCamera(DeltaSeconds);
 }
 
 void APDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -87,6 +88,8 @@ void APDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 		EnhancedInputComponent->BindAction(JumpAction,ETriggerEvent::Triggered,this,&ThisClass::Jump);
 		EnhancedInputComponent->BindAction(InteractAction,ETriggerEvent::Triggered,this,&ThisClass::Interaction);
+		EnhancedInputComponent->BindAction(AttackAction,ETriggerEvent::Triggered,this,&ThisClass::Attack);
+		EnhancedInputComponent->BindAction(AimAction,ETriggerEvent::Triggered,this,&ThisClass::Aimimg);
 	}
 }
 
@@ -205,6 +208,25 @@ void APDCharacter::Interaction(const FInputActionValue& Value)
 	Interact();
 }
 
+void APDCharacter::Attack(const FInputActionValue& Value)
+{
+	if(EquippedWeapon)
+	{
+		if(IInteractInterface* Interface = Cast<IInteractInterface>(OverlappedActor))
+		{
+			Interface->Interact();
+		}
+	}
+}
+
+void APDCharacter::Aimimg(const FInputActionValue& Value)
+{
+	if(EquippedWeapon)
+	{
+		bIsAiming = Value.Get<bool>();	
+	}
+}
+
 void APDCharacter::SmoothCameraRotation(float DeltaTime)
 {
 	if (RightInputValue != 0.f || ForwardInputValue != 0.f)
@@ -212,5 +234,23 @@ void APDCharacter::SmoothCameraRotation(float DeltaTime)
 		const FRotator InterpRot = UKismetMathLibrary::RInterpTo(GetActorRotation(), GetControlRotation(), DeltaTime, 6.f);
 		SetActorRotation(FRotator(0.f, InterpRot.Yaw, 0.f));
 	}
+}
+
+void APDCharacter::SmoothAimCamera(const float DeltaTime)
+{
+	if (!EquippedWeapon) 
+	{
+		return;
+	}
+
+	// 목표 카메라의 Field of View (FOV) 값 설정
+	const float TargetFOV = bIsAiming ? 60.f : 90.f;
+
+	// 현재 FOV에서 목표 FOV로 부드럽게 보간
+	const float CurrentFOV = CameraComponent->FieldOfView;
+	const float InterpolatedFOV = UKismetMathLibrary::FInterpTo(CurrentFOV, TargetFOV, DeltaTime, 5.f);
+
+	// 카메라 FOV 설정
+	CameraComponent->SetFieldOfView(InterpolatedFOV);
 }
 

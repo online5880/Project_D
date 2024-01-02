@@ -23,6 +23,11 @@ void ABaseRangedWeapon::Tick(float DeltaTime)
 void ABaseRangedWeapon::Attack()
 {
 	Super::Attack();
+
+	if(OwnerCharacter)
+	{
+		GEngine->AddOnScreenDebugMessage(-1,3.f,FColor::Red,__FUNCTION__);
+	}
 }
 
 void ABaseRangedWeapon::Reload()
