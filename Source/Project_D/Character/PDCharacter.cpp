@@ -88,8 +88,8 @@ void APDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
 		EnhancedInputComponent->BindAction(JumpAction,ETriggerEvent::Triggered,this,&ThisClass::Jump);
 		EnhancedInputComponent->BindAction(InteractAction,ETriggerEvent::Triggered,this,&ThisClass::Interaction);
-		EnhancedInputComponent->BindAction(AttackAction,ETriggerEvent::Triggered,this,&ThisClass::Attack);
-		EnhancedInputComponent->BindAction(AimAction,ETriggerEvent::Triggered,this,&ThisClass::Aimimg);
+		EnhancedInputComponent->BindAction(AttackInputAction,ETriggerEvent::Triggered,this,&ThisClass::Attack);
+		EnhancedInputComponent->BindAction(AimInputAction,ETriggerEvent::Triggered,this,&ThisClass::Aimimg);
 	}
 }
 
@@ -212,9 +212,9 @@ void APDCharacter::Attack(const FInputActionValue& Value)
 {
 	if(EquippedWeapon)
 	{
-		if(IInteractInterface* Interface = Cast<IInteractInterface>(OverlappedActor))
+		if(IAttackInterface* Interface = Cast<IAttackInterface>(EquippedWeapon))
 		{
-			Interface->Interact();
+			Interface->Attack();
 		}
 	}
 }

@@ -3,6 +3,7 @@
 #include "Project_D/Object/Weapon/BaseWeapon.h"
 #include "BaseRangedWeapon.generated.h"
 
+class UAnimMontage;
 class APDCharacter;
 
 UCLASS()
@@ -32,4 +33,13 @@ protected:
 public:
 	UPROPERTY()
 	TObjectPtr<APDCharacter> OwnerCharacter;
+
+private:
+	// 발사 몽타주
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Montage", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> FireMontage;
+
+	// 장전 몽타주
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Montage", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> ReloadMontage;
 };

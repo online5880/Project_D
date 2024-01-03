@@ -1,4 +1,7 @@
 ﻿#include "BaseRangedWeapon.h"
+
+#include "Animation/AnimInstance.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/Engine.h"
 #include "Kismet/GameplayStatics.h"
 #include "Project_D/Character/PDCharacter.h"
@@ -24,9 +27,9 @@ void ABaseRangedWeapon::Attack()
 {
 	Super::Attack();
 
-	if(OwnerCharacter)
+	if(OwnerCharacter && OwnerCharacter->GetIsAiming() && FireMontage)
 	{
-		GEngine->AddOnScreenDebugMessage(-1,3.f,FColor::Red,__FUNCTION__);
+		OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_Play(FireMontage);
 	}
 }
 

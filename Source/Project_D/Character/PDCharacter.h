@@ -116,11 +116,11 @@ private:
 
 	// 공격 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> AttackAction;
+	TObjectPtr<UInputAction> AttackInputAction;
 
 	// Aim 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputAction> AimAction;
+	TObjectPtr<UInputAction> AimInputAction;
 	
 #pragma region Movement Variables
 	// 움직임 값 - X
