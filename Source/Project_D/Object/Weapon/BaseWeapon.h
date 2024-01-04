@@ -6,6 +6,8 @@
 #include "Project_D/Interface/InteractInterface.h"
 #include "BaseWeapon.generated.h"
 
+class UMetaSoundSource;
+class UAudioComponent;
 class USphereComponent;
 
 UENUM(BlueprintType)
@@ -61,8 +63,17 @@ protected:
 	// Attach Socket Name
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Weapon", meta = (AllowPrivateAccess = "true"))
 	FName AttachSocketName = NAME_None;
+
+#pragma region Sound
+	// 오디오 컴포넌트
+	UPROPERTY(EditDefaultsOnly, Category = "Component")
+	TObjectPtr<UAudioComponent> AudioComponent;
 	
+	UPROPERTY(EditAnywhere, Category = "Sound")
+	TObjectPtr<UMetaSoundSource> AttackSound;
 private:
+	
+#pragma region Component
 	// Sphere Component
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USphereComponent> SphereComponent;
@@ -75,6 +86,7 @@ private:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMeshComponent> WeaponSkeletalMeshComponent;
 
+	
 #pragma region ENUM
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
 	EWeaponType WeaponType;

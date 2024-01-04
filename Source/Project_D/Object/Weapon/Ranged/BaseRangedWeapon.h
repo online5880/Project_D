@@ -15,6 +15,8 @@ public:
 
 	ABaseRangedWeapon();
 
+	// 발사
+	void Fire();
 protected:
 
 	virtual void BeginPlay() override;
@@ -30,6 +32,9 @@ protected:
 	// Overlap
 	virtual void OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	virtual void OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+
+	// member method
+	
 public:
 	UPROPERTY()
 	TObjectPtr<APDCharacter> OwnerCharacter;

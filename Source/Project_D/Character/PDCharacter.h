@@ -167,4 +167,5 @@ public:
 	FORCEINLINE ECharacterCombatState	GetCharacterCombatState() const {return CombatState;}
 	FORCEINLINE void					SetCharacterCombatState(const ECharacterCombatState State) {CombatState = State;}
 	FORCEINLINE bool					GetIsAiming() const {return bIsAiming;}
+	FORCEINLINE ABaseWeapon*			GetEquippedWeapon() const {return EquippedWeapon;}
 };

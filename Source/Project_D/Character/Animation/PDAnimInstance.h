@@ -36,6 +36,10 @@ protected:
 	// 애님노티파이 - FootStep Left
 	UFUNCTION()
 	void AnimNotify_FootStep_L();
+
+	// 애님노티파이 - 공격(원거리 무기)
+	UFUNCTION()
+	void AnimNotify_AttackRangedWeapon();
 private:
 	// 캐릭터 클래스
 	UPROPERTY(BlueprintReadOnly, Category = "Character", meta = (AllowPrivateAccess = "true"))

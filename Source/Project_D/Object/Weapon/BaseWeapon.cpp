@@ -3,6 +3,7 @@
 
 #include "BaseWeapon.h"
 
+#include "Components/AudioComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -22,6 +23,9 @@ ABaseWeapon::ABaseWeapon()
 
 	WeaponSkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Skeletal Mesh"));
 	WeaponSkeletalMeshComponent->SetupAttachment(GetRootComponent());
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Component"));
+	AudioComponent->bAutoActivate = false;
 }
 
 void ABaseWeapon::BeginPlay()

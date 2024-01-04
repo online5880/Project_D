@@ -1,6 +1,8 @@
 ﻿#include "BaseRangedWeapon.h"
 
+#include "MetasoundSource.h"
 #include "Animation/AnimInstance.h"
+#include "Components/AudioComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/Engine.h"
 #include "Kismet/GameplayStatics.h"
@@ -76,5 +78,20 @@ void ABaseRangedWeapon::OnEndOverlapEvent(UPrimitiveComponent* OverlappedCompone
 		OwnerCharacter = nullptr;
 	}
 	bCanInteract = false;
+}
+
+void ABaseRangedWeapon::Fire()
+{
+	if(OwnerCharacter)
+	{
+		if(AttackSound)
+		{
+			UMetaSoundSource* PlaySoundCue = AttackSound;
+			
+			AudioComponent.Get()->Stop();
+			AudioComponent->SetSound(PlaySoundCue);
+			AudioComponent->Play();
+		}
+	}
 }
 
