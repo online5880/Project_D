@@ -88,7 +88,7 @@ private:
 
 	
 #pragma region ENUM
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Component", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Weapon", meta = (AllowPrivateAccess = "true"))
 	EWeaponType WeaponType;
 public:
 	FORCEINLINE float		GetDamage() const {return Damage;}

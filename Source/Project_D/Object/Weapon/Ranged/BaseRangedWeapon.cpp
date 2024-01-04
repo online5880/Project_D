@@ -88,7 +88,7 @@ void ABaseRangedWeapon::Fire()
 		{
 			UMetaSoundSource* PlaySoundCue = AttackSound;
 			
-			AudioComponent.Get()->Stop();
+			AudioComponent->Stop();
 			AudioComponent->SetSound(PlaySoundCue);
 			AudioComponent->Play();
 		}
