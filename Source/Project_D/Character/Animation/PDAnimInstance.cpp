@@ -5,6 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Project_D/Character/PDCharacter.h"
 #include "Project_D/Character/Component/FootStepComponent.h"
+#include "Project_D/Object/Weapon/Ranged/BaseRangedWeapon.h"
 
 UPDAnimInstance::UPDAnimInstance()
 {
@@ -118,5 +119,16 @@ void UPDAnimInstance::AnimNotify_FootStep_L()
 	if(Character->GetFootStepComponent())
 	{
 		Character->GetFootStepComponent()->FootStep(ECharacterFoot::ECF_Left);
+	}
+}
+
+void UPDAnimInstance::AnimNotify_AttackRangedWeapon()
+{
+	if(Character->GetEquippedWeapon())
+	{
+		if(ABaseRangedWeapon* BaseRangedWeapon = Cast<ABaseRangedWeapon>(Character->GetEquippedWeapon()))
+		{
+			BaseRangedWeapon->Fire();
+		}
 	}
 }

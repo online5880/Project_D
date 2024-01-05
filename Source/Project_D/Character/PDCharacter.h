@@ -55,9 +55,13 @@ protected:
 	void Crouching(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Interaction(const FInputActionValue& Value);
+	void Attack(const FInputActionValue& Value);
+	void Aimimg(const FInputActionValue& Value);
 
 	// 카메라 회전을 부드럽게 해준다.
 	void SmoothCameraRotation(float DeltaTime);
+	// Aiming 카메라
+	void SmoothAimCamera(const float DeltaTime);
 
 private:
 #pragma region Component
@@ -109,6 +113,14 @@ private:
 	// 상호작용 액션
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> InteractAction;
+
+	// 공격 액션
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> AttackInputAction;
+
+	// Aim 액션
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> AimInputAction;
 	
 #pragma region Movement Variables
 	// 움직임 값 - X
@@ -126,6 +138,10 @@ private:
 	// 앉아 있는지
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsCrouching;
+
+	// 조준 중인지
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	bool bIsAiming;
 
 #pragma region Weapon
 	// 장착중인 무기
@@ -150,4 +166,6 @@ public:
 	FORCEINLINE void					SetOverlappedActor(AActor* Actor) {OverlappedActor = Actor;}
 	FORCEINLINE ECharacterCombatState	GetCharacterCombatState() const {return CombatState;}
 	FORCEINLINE void					SetCharacterCombatState(const ECharacterCombatState State) {CombatState = State;}
+	FORCEINLINE bool					GetIsAiming() const {return bIsAiming;}
+	FORCEINLINE ABaseWeapon*			GetEquippedWeapon() const {return EquippedWeapon;}
 };

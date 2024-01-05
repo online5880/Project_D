@@ -1,4 +1,9 @@
 ﻿#include "BaseRangedWeapon.h"
+
+#include "MetasoundSource.h"
+#include "Animation/AnimInstance.h"
+#include "Components/AudioComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Engine/Engine.h"
 #include "Kismet/GameplayStatics.h"
 #include "Project_D/Character/PDCharacter.h"
@@ -23,6 +28,11 @@ void ABaseRangedWeapon::Tick(float DeltaTime)
 void ABaseRangedWeapon::Attack()
 {
 	Super::Attack();
+
+	if(OwnerCharacter && OwnerCharacter->GetIsAiming() && FireMontage)
+	{
+		OwnerCharacter->GetMesh()->GetAnimInstance()->Montage_Play(FireMontage);
+	}
 }
 
 void ABaseRangedWeapon::Reload()
@@ -68,5 +78,20 @@ void ABaseRangedWeapon::OnEndOverlapEvent(UPrimitiveComponent* OverlappedCompone
 		OwnerCharacter = nullptr;
 	}
 	bCanInteract = false;
+}
+
+void ABaseRangedWeapon::Fire()
+{
+	if(OwnerCharacter)
+	{
+		if(AttackSound)
+		{
+			UMetaSoundSource* PlaySoundCue = AttackSound;
+			
+			AudioComponent->Stop();
+			AudioComponent->SetSound(PlaySoundCue);
+			AudioComponent->Play();
+		}
+	}
 }
 

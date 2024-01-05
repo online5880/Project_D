@@ -3,6 +3,7 @@
 #include "Project_D/Object/Weapon/BaseWeapon.h"
 #include "BaseRangedWeapon.generated.h"
 
+class UAnimMontage;
 class APDCharacter;
 
 UCLASS()
@@ -14,6 +15,8 @@ public:
 
 	ABaseRangedWeapon();
 
+	// 발사
+	void Fire();
 protected:
 
 	virtual void BeginPlay() override;
@@ -29,7 +32,19 @@ protected:
 	// Overlap
 	virtual void OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	virtual void OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+
+	// member method
+	
 public:
 	UPROPERTY()
 	TObjectPtr<APDCharacter> OwnerCharacter;
+
+private:
+	// 발사 몽타주
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Montage", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> FireMontage;
+
+	// 장전 몽타주
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Montage", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAnimMontage> ReloadMontage;
 };
