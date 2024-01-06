@@ -18,7 +18,8 @@ public class Project_D : ModuleRules
 			"AnimGraph",
 			"AnimGraphRuntime",
 			"MetasoundEngine",
-			"PhysicsCore"
+			"PhysicsCore",
+			"Niagara"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

@@ -91,6 +91,8 @@ private:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category=  "Weapon", meta = (AllowPrivateAccess = "true"))
 	EWeaponType WeaponType;
 public:
+	FORCEINLINE UStaticMeshComponent* GetWeaponStaticMesh() const {return WeaponStaticMeshComponent;}
+	FORCEINLINE USkeletalMeshComponent* GetWeaponSkeletalMesh() const {return WeaponSkeletalMeshComponent;}
 	FORCEINLINE float		GetDamage() const {return Damage;}
 	FORCEINLINE EWeaponType	GetWeaponType() const {return WeaponType;}
 

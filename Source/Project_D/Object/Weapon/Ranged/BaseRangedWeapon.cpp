@@ -1,6 +1,7 @@
 ﻿#include "BaseRangedWeapon.h"
 
 #include "MetasoundSource.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Animation/AnimInstance.h"
 #include "Components/AudioComponent.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -84,13 +85,17 @@ void ABaseRangedWeapon::Fire()
 {
 	if(OwnerCharacter)
 	{
-		if(AttackSound)
+		if(AttackSound && FireEffect)
 		{
 			UMetaSoundSource* PlaySoundCue = AttackSound;
 			
 			AudioComponent->Stop();
 			AudioComponent->SetSound(PlaySoundCue);
 			AudioComponent->Play();
+
+			const FTransform SocketTransform = GetWeaponSkeletalMesh()->GetSocketTransform(MuzzleSocketName);
+			const UWorld* World = GetWorld();
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(World,FireEffect,SocketTransform.GetLocation(),SocketTransform.Rotator());
 		}
 	}
 }

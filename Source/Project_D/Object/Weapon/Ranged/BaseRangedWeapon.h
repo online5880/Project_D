@@ -3,6 +3,7 @@
 #include "Project_D/Object/Weapon/BaseWeapon.h"
 #include "BaseRangedWeapon.generated.h"
 
+class UNiagaraSystem;
 class UAnimMontage;
 class APDCharacter;
 
@@ -35,10 +36,16 @@ protected:
 
 	// member method
 	
-public:
 	UPROPERTY()
 	TObjectPtr<APDCharacter> OwnerCharacter;
 
+	// 총 발사 이펙트(나이아가라)
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Effect", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UNiagaraSystem> FireEffect;
+
+	// 발사 소켓 이름
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Effect", meta = (AllowPrivateAccess = "true"))
+	FName MuzzleSocketName;
 private:
 	// 발사 몽타주
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Montage", meta = (AllowPrivateAccess = "true"))
