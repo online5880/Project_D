@@ -2,13 +2,11 @@
 
 #include "MetasoundSource.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Ammo/BaseRangedAmmo.h"
 #include "Animation/AnimInstance.h"
 #include "Components/AudioComponent.h"
-#include "Components/SkeletalMeshComponent.h"
-#include "Engine/Engine.h"
 #include "Kismet/GameplayStatics.h"
 #include "Project_D/Character/PDCharacter.h"
-
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BaseRangedWeapon)
 
 ABaseRangedWeapon::ABaseRangedWeapon()
@@ -85,7 +83,7 @@ void ABaseRangedWeapon::Fire()
 {
 	if(OwnerCharacter)
 	{
-		if(AttackSound && FireEffect)
+		if(AttackSound && FireEffect && DefaultRangedAmmo)
 		{
 			UMetaSoundSource* PlaySoundCue = AttackSound;
 			
@@ -95,7 +93,14 @@ void ABaseRangedWeapon::Fire()
 
 			const FTransform SocketTransform = GetWeaponSkeletalMesh()->GetSocketTransform(MuzzleSocketName);
 			const UWorld* World = GetWorld();
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(World,FireEffect,SocketTransform.GetLocation(),SocketTransform.Rotator());
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(World,FireEffect,SocketTransform.GetLocation(),SocketTransform.Rotator()+FRotator(-90.f,0.f,0.f));
+
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.Owner = this;
+			SpawnParameters.Instigator = GetInstigator();
+			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			
+			CurrentRangedAmmo = GetWorld()->SpawnActor<ABaseRangedAmmo>(DefaultRangedAmmo,SocketTransform.GetLocation(),SocketTransform.Rotator());
 		}
 	}
 }
