@@ -35,6 +35,13 @@ protected:
 	// Overlap
 	virtual void OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	virtual void OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+	
+	// 총 소리 재생
+	void PlayAttackSound();
+	// 발사 이펙트 생성
+	void SpawnFireEffect();
+	// Projectile 생성
+	void SpawnProjectile();
 
 	// member method
 	

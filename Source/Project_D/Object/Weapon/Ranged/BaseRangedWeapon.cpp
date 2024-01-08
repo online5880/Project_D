@@ -49,6 +49,7 @@ void ABaseRangedWeapon::Interact()
 		if(IInteractInterface* Interact = Cast<IInteractInterface>(OwnerCharacter))
 		{
 			Interact->PickupWeapon(this,AttachSocketName);
+			//this->SetActorEnableCollision(false);
 		}
 	}
 }
@@ -58,12 +59,15 @@ void ABaseRangedWeapon::OnBeginOverlapEvent(UPrimitiveComponent* OverlappedCompo
 {
 	Super::OnBeginOverlapEvent(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 	// Overlap 시작 시 처리
-	OwnerCharacter = Cast<APDCharacter>(OtherActor);
-	if(OwnerCharacter)
+	if(OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(),0))
 	{
-		OwnerCharacter->SetOverlappedActor(this);
+		OwnerCharacter = Cast<APDCharacter>(OtherActor);
+		if(OwnerCharacter)
+		{
+			OwnerCharacter->SetOverlappedActor(this);
+		}
+		bCanInteract = true;
 	}
-	bCanInteract = true;
 }
 
 void ABaseRangedWeapon::OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -71,37 +75,50 @@ void ABaseRangedWeapon::OnEndOverlapEvent(UPrimitiveComponent* OverlappedCompone
 {
 	Super::OnEndOverlapEvent(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
 	// Overlap 종료 시 처리
-	if(OwnerCharacter)
+	if(OtherActor == UGameplayStatics::GetPlayerCharacter(GetWorld(),0))
 	{
-		OwnerCharacter->SetOverlappedActor(nullptr);
-		OwnerCharacter = nullptr;
+		if(OwnerCharacter)
+		{
+			OwnerCharacter->SetOverlappedActor(nullptr);
+			OwnerCharacter = nullptr;
+		}
+		bCanInteract = false;
 	}
-	bCanInteract = false;
+}
+
+void ABaseRangedWeapon::PlayAttackSound()
+{
+	AudioComponent->Stop();
+	AudioComponent->SetSound(AttackSound);
+	AudioComponent->Play();
+}
+
+void ABaseRangedWeapon::SpawnFireEffect()
+{
+	const FTransform SocketTransform = GetWeaponSkeletalMesh()->GetSocketTransform(MuzzleSocketName);
+	const UWorld* World = GetWorld();
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(World,FireEffect,SocketTransform.GetLocation(),SocketTransform.Rotator()+FRotator(-90.f,0.f,0.f));
+}
+
+void ABaseRangedWeapon::SpawnProjectile()
+{
+	const FTransform SocketTransform = GetWeaponSkeletalMesh()->GetSocketTransform(MuzzleSocketName);
+	
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	SpawnParameters.Instigator = GetInstigator();
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			
+	CurrentRangedAmmo = GetWorld()->SpawnActor<ABaseRangedAmmo>(DefaultRangedAmmo,SocketTransform.GetLocation(),SocketTransform.Rotator());
 }
 
 void ABaseRangedWeapon::Fire()
 {
-	if(OwnerCharacter)
+	if(OwnerCharacter && AttackSound && FireEffect && DefaultRangedAmmo)
 	{
-		if(AttackSound && FireEffect && DefaultRangedAmmo)
-		{
-			UMetaSoundSource* PlaySoundCue = AttackSound;
-			
-			AudioComponent->Stop();
-			AudioComponent->SetSound(PlaySoundCue);
-			AudioComponent->Play();
-
-			const FTransform SocketTransform = GetWeaponSkeletalMesh()->GetSocketTransform(MuzzleSocketName);
-			const UWorld* World = GetWorld();
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(World,FireEffect,SocketTransform.GetLocation(),SocketTransform.Rotator()+FRotator(-90.f,0.f,0.f));
-
-			FActorSpawnParameters SpawnParameters;
-			SpawnParameters.Owner = this;
-			SpawnParameters.Instigator = GetInstigator();
-			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-			
-			CurrentRangedAmmo = GetWorld()->SpawnActor<ABaseRangedAmmo>(DefaultRangedAmmo,SocketTransform.GetLocation(),SocketTransform.Rotator());
-		}
+		PlayAttackSound();
+		SpawnFireEffect();
+		SpawnProjectile();
 	}
 }
 

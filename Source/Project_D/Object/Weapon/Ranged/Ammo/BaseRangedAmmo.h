@@ -26,6 +26,13 @@ protected:
 	UFUNCTION()
 	virtual void OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	// Projectile
+	UFUNCTION()
+	virtual void OnProjectileStop(const FHitResult& ImpactResult);
+	UFUNCTION()
+	virtual void OnProjectileBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity);
+	
+
 	// 총알 메쉬
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "Ammo")
 	TObjectPtr<UStaticMeshComponent> AmmoMesh;

@@ -10,7 +10,7 @@ ABaseRangedAmmo::ABaseRangedAmmo()
 	PrimaryActorTick.bCanEverTick = true;
 
 	AmmoCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Ammo Collision"));
-	AmmoCollision->SetRelativeRotation(FRotator(0,-90.f,90.f));
+	AmmoCollision->SetRelativeRotation(FRotator(-90.f,0.f,0.f));
 	SetRootComponent(AmmoCollision);
 	
 	AmmoMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Ammo Mesh"));
@@ -25,6 +25,9 @@ void ABaseRangedAmmo::BeginPlay()
 	
 	AmmoCollision->OnComponentBeginOverlap.AddDynamic(this,&ThisClass::OnBeginOverlapEvent);
 	AmmoCollision->OnComponentEndOverlap.AddDynamic(this,&ThisClass::OnEndOverlapEvent);
+
+	ProjectileMovementComponent->OnProjectileStop.AddDynamic(this,&ThisClass::OnProjectileStop);
+	ProjectileMovementComponent->OnProjectileBounce.AddDynamic(this,&ThisClass::OnProjectileBounce);
 }
 
 void ABaseRangedAmmo::Tick(float DeltaTime)
@@ -35,11 +38,21 @@ void ABaseRangedAmmo::Tick(float DeltaTime)
 void ABaseRangedAmmo::OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(1,3.f,FColor::Orange,__FUNCTION__);
+	
 }
 
 void ABaseRangedAmmo::OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	
+}
+
+void ABaseRangedAmmo::OnProjectileStop(const FHitResult& ImpactResult)
+{
+	DrawDebugSphere(GetWorld(),ImpactResult.ImpactPoint,10.f,8,FColor::Orange,false,3.f,0,1.f);
+}
+
+void ABaseRangedAmmo::OnProjectileBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity)
 {
 	
 }
