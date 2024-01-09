@@ -158,6 +158,7 @@ private:
 
 public:
 #pragma region INLINE_FUNCTION
+	FORCEINLINE UCameraComponent*		GetCameraComponent() const {return CameraComponent;}
 	FORCEINLINE float					GetForwardInputValue() const { return ForwardInputValue; }
 	FORCEINLINE float					GetRightInputValue() const { return RightInputValue; }
 	FORCEINLINE bool					GetIsCrouching() const { return bIsCrouching; }

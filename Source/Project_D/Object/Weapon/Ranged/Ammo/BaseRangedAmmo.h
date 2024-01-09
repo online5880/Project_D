@@ -36,7 +36,6 @@ protected:
 	UFUNCTION()
 	virtual void OnProjectileBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity);
 	
-
 	// 총알 메쉬
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,  Category = "Ammo")
 	TObjectPtr<UStaticMeshComponent> AmmoMesh;

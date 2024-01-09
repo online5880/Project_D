@@ -61,8 +61,11 @@ void ABaseRangedAmmo::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActo
 		{
 			const FVector HitLocation(Hit.ImpactPoint);
 			const FRotator HitRotation(Hit.ImpactNormal.ToOrientationRotator());
-			UGameplayStatics::SpawnDecalAtLocation(World,HitDecal,DecalSize,HitLocation,HitRotation);
+			
+			// Decal
+			UGameplayStatics::SpawnDecalAtLocation(World,HitDecal,DecalSize,HitLocation,HitRotation,1.f);
 
+			// Effect
 			const FRotator EffectRotation(HitRotation+FRotator(-90.f,0.f,0.f));
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(World,HitEffect,HitLocation,EffectRotation);
 
@@ -81,4 +84,3 @@ void ABaseRangedAmmo::OnProjectileBounce(const FHitResult& ImpactResult, const F
 {
 	
 }
-

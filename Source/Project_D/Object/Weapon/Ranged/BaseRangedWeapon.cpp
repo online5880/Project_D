@@ -4,8 +4,10 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Ammo/BaseRangedAmmo.h"
 #include "Animation/AnimInstance.h"
+#include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Project_D/Character/PDCharacter.h"
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BaseRangedWeapon)
 
@@ -103,13 +105,49 @@ void ABaseRangedWeapon::SpawnFireEffect()
 void ABaseRangedWeapon::SpawnProjectile()
 {
 	const FTransform SocketTransform = GetWeaponSkeletalMesh()->GetSocketTransform(MuzzleSocketName);
+	const FRotator Rotator = GetTargetRotation();
 	
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = this;
 	SpawnParameters.Instigator = GetInstigator();
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 			
-	CurrentRangedAmmo = GetWorld()->SpawnActor<ABaseRangedAmmo>(DefaultRangedAmmo,SocketTransform.GetLocation(),SocketTransform.Rotator());
+	CurrentRangedAmmo = GetWorld()->SpawnActor<ABaseRangedAmmo>(DefaultRangedAmmo,SocketTransform.GetLocation(),Rotator);
+}
+
+FRotator ABaseRangedWeapon::GetTargetRotation()
+{
+	if (UWorld* World = GetWorld())
+	{
+		FHitResult HitResult;
+		TArray<AActor*> IgnoreActors;
+		IgnoreActors.Add(this);
+		IgnoreActors.Add(GetOwner());
+
+		const FVector Start(OwnerCharacter->GetCameraComponent()->GetComponentLocation());
+		const FVector ForwardVector(OwnerCharacter->GetCameraComponent()->GetForwardVector());
+		const FVector End(Start+(ForwardVector*100000.f));
+
+		UKismetSystemLibrary::LineTraceSingle(
+			World,
+			Start,
+			End,
+			ETraceTypeQuery::TraceTypeQuery1,
+			false,
+			IgnoreActors,
+			EDrawDebugTrace::None,
+			HitResult,true);
+
+		if(HitResult.bBlockingHit)
+		{
+			return UKismetMathLibrary::FindLookAtRotation(Start,HitResult.ImpactPoint);
+		}
+		else
+		{
+			return UKismetMathLibrary::FindLookAtRotation(Start,HitResult.TraceEnd);
+		}
+	}
+	return FRotator();
 }
 
 void ABaseRangedWeapon::Fire()

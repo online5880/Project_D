@@ -99,8 +99,8 @@ void UPDAnimInstance::CalcAimOffset(const float Speed, const float Delta)
 	const FRotator NewRotation(0.0f, YawDifference, InvertedRoll);
 
 	// 최대 회전 범위 내에서 회전을 제한합니다.
-	const float ClampedYaw = FMath::ClampAngle(NewRotation.Yaw, -30, 45);
-	const float ClampedRoll = FMath::ClampAngle(NewRotation.Roll, -45, 45);
+	const float ClampedYaw = FMath::ClampAngle(NewRotation.Yaw, -60.f, 60.f);
+	const float ClampedRoll = FMath::ClampAngle(NewRotation.Roll, -60.f, 60.f);
 	const FRotator ClampedRotation(0.0f, ClampedYaw, ClampedRoll);
 
 	AimOffset = ClampedRotation;
