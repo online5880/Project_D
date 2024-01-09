@@ -3,6 +3,8 @@
 #include "GameFramework/Actor.h"
 #include "BaseRangedAmmo.generated.h"
 
+class UMaterialInterface;
+class UNiagaraSystem;
 class UCapsuleComponent;
 class UProjectileMovementComponent;
 class UStaticMeshComponent;
@@ -25,6 +27,8 @@ protected:
 	virtual void OnBeginOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	virtual void OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	// Projectile
 	UFUNCTION()
@@ -57,5 +61,17 @@ private:
 	// 총알 범위(유효 사거리, 범위를 넘어가면 사라짐)
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Ammo", meta = (AllowPrivateAccess = "true"))
 	float BulletRange;
+
+	// 총알 맞았을 때 이펙트
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Effect", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UNiagaraSystem> HitEffect;
+
+	// 총알 맞았을 때 데칼
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Effect", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UMaterialInterface> HitDecal;
+
+	// 데칼 사이즈
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "Effect", meta = (AllowPrivateAccess = "true"))
+	FVector DecalSize = FVector(4.f,8.f,8.f);
 	
 };

@@ -1,7 +1,10 @@
 ﻿#include "BaseRangedAmmo.h"
+
+#include "NiagaraFunctionLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BaseRangedAmmo)
 
@@ -25,6 +28,7 @@ void ABaseRangedAmmo::BeginPlay()
 	
 	AmmoCollision->OnComponentBeginOverlap.AddDynamic(this,&ThisClass::OnBeginOverlapEvent);
 	AmmoCollision->OnComponentEndOverlap.AddDynamic(this,&ThisClass::OnEndOverlapEvent);
+	AmmoCollision->OnComponentHit.AddDynamic(this,&ThisClass::OnHit);
 
 	ProjectileMovementComponent->OnProjectileStop.AddDynamic(this,&ThisClass::OnProjectileStop);
 	ProjectileMovementComponent->OnProjectileBounce.AddDynamic(this,&ThisClass::OnProjectileBounce);
@@ -47,9 +51,30 @@ void ABaseRangedAmmo::OnEndOverlapEvent(UPrimitiveComponent* OverlappedComponent
 	
 }
 
+void ABaseRangedAmmo::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	//DrawDebugSphere(GetWorld(),Hit.ImpactPoint,2.5f,8,FColor::Orange,false,3.f,0,1.f);
+	if(HitEffect && HitDecal)
+	{
+		if(const UWorld* World = GetWorld())
+		{
+			const FVector HitLocation(Hit.ImpactPoint);
+			const FRotator HitRotation(Hit.ImpactNormal.ToOrientationRotator());
+			UGameplayStatics::SpawnDecalAtLocation(World,HitDecal,DecalSize,HitLocation,HitRotation);
+
+			const FRotator EffectRotation(HitRotation+FRotator(-90.f,0.f,0.f));
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(World,HitEffect,HitLocation,EffectRotation);
+
+			Destroy();
+		}
+	}
+}
+
+
 void ABaseRangedAmmo::OnProjectileStop(const FHitResult& ImpactResult)
 {
-	DrawDebugSphere(GetWorld(),ImpactResult.ImpactPoint,10.f,8,FColor::Orange,false,3.f,0,1.f);
+	
 }
 
 void ABaseRangedAmmo::OnProjectileBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity)
